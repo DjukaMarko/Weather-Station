@@ -4,7 +4,7 @@ import SignInForm from "./SignInForm";
 export default function SignIn() {
     return (
         <div className="w-full h-screen relative flex justify-center items-center">
-            <div className="flex flex-col space-y-4 items-center text-center max-w-[400px]">
+            <div className="flex flex-col space-y-4 items-center text-center max-w-[400px] p-4">
                 <div className="flex flex-col space-y-2">
                     <p className="font-bold text-3xl">Access your account</p>
                     <p className="text-muted-foreground font-[500] text-sm">Enter your email and password below to enter your account</p>
