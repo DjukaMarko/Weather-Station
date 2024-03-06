@@ -4,18 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SyntheticEvent, useState } from "react";
+import { FormEvent } from "react";
+import { useFormState, useFormStatus } from 'react-dom';
+import { authenticate } from '@/lib/actions';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignInForm() {
-    const [isLoading, setLoading] = useState(false);
+    const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+    const { pending } = useFormStatus();
+    console.log(pending);
 
-    let handleSubmit = (e: SyntheticEvent) => {
-        e.preventDefault();
-        setLoading(true);
-    }
     return (
         <div className="w-full">
-            <form onSubmit={handleSubmit}>
+            <form action={dispatch}>
                 <div className="flex flex-col space-y-1">
                     <Label className="sr-only" htmlFor="email">
                         Email
@@ -24,11 +25,12 @@ export default function SignInForm() {
                         id="email"
                         className="placeholder:text-zinc-500"
                         placeholder="name@example.com"
+                        name="email"
                         type="email"
                         autoCapitalize="none"
                         autoComplete="email"
                         autoCorrect="off"
-                        disabled={isLoading}
+                        aria-disabled={pending}
                     />
 
                     <Label className="sr-only" htmlFor="password">
@@ -37,20 +39,30 @@ export default function SignInForm() {
                     <Input
                         id="password"
                         className="placeholder:text-zinc-500 placeholder:text-xs"
+                        name="password"
                         placeholder="&#9679; &#9679; &#9679; &#9679; &#9679; &#9679; &#9679; &#9679;"
                         type="password"
                         autoCapitalize="none"
                         autoCorrect="off"
-                        disabled={isLoading}
+                        aria-disabled={pending}
                     />
                 </div>
 
-                <Button variant={"default"} className="w-full mt-6" disabled={isLoading}>
-                    {isLoading &&
+                <Button variant={"default"} className="w-full mt-6" aria-disabled={pending}>
+                    {pending &&
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     }
                     Continue
                 </Button>
+
+                {errorMessage &&
+                    <Alert className="mt-4" variant="destructive">
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                            Check your form and try again!
+                        </AlertDescription>
+                    </Alert>
+                }
             </form>
         </div>
     );
