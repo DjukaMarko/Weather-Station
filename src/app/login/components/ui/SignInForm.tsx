@@ -4,19 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent } from "react";
-import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/lib/actions';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import useAuthentication from "@/components/hooks/useAuthentication";
 
 export default function SignInForm() {
-    const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-    const { pending } = useFormStatus();
-    console.log(pending);
+    const { handleSubmit, errorMessage, isLoading } = useAuthentication(authenticate);
 
     return (
         <div className="w-full">
-            <form action={dispatch}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col space-y-1">
                     <Label className="sr-only" htmlFor="email">
                         Email
@@ -30,7 +27,7 @@ export default function SignInForm() {
                         autoCapitalize="none"
                         autoComplete="email"
                         autoCorrect="off"
-                        aria-disabled={pending}
+                        disabled={isLoading}
                     />
 
                     <Label className="sr-only" htmlFor="password">
@@ -44,12 +41,12 @@ export default function SignInForm() {
                         type="password"
                         autoCapitalize="none"
                         autoCorrect="off"
-                        aria-disabled={pending}
+                        disabled={isLoading}
                     />
                 </div>
 
-                <Button variant={"default"} className="w-full mt-6" aria-disabled={pending}>
-                    {pending &&
+                <Button variant={"default"} className="w-full mt-6" disabled={isLoading}>
+                    {isLoading &&
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     }
                     Continue
@@ -59,7 +56,7 @@ export default function SignInForm() {
                     <Alert className="mt-4" variant="destructive">
                         <AlertTitle>Error</AlertTitle>
                         <AlertDescription>
-                            Check your form and try again!
+                            {errorMessage}
                         </AlertDescription>
                     </Alert>
                 }

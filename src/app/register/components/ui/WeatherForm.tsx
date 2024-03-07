@@ -1,18 +1,15 @@
 'use client'
 
+import useAuthentication from "@/components/hooks/useAuthentication";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SyntheticEvent, useState } from "react";
+import { register } from "@/lib/actions";
 
 export default function WeatherForm() {
-    const [isLoading, setLoading] = useState(false);
-
-    let handleSubmit = (e: SyntheticEvent) => {
-        e.preventDefault();
-        setLoading(true);
-    }
+    const { handleSubmit, errorMessage, isLoading } = useAuthentication(register);
     return (
         <div className="w-full">
             <form onSubmit={handleSubmit}>
@@ -24,6 +21,7 @@ export default function WeatherForm() {
                         id="email"
                         className="placeholder:text-zinc-500"
                         placeholder="name@example.com"
+                        name="email"
                         type="email"
                         autoCapitalize="none"
                         autoComplete="email"
@@ -38,6 +36,7 @@ export default function WeatherForm() {
                         id="password"
                         className="placeholder:text-zinc-500"
                         placeholder="Enter your password"
+                        name="password"
                         type="password"
                         autoCapitalize="none"
                         autoCorrect="off"
@@ -51,6 +50,7 @@ export default function WeatherForm() {
                         id="confirm-password"
                         className="placeholder:text-zinc-500"
                         placeholder="Confirm your password"
+                        name="confirm-password"
                         type="password"
                         autoCapitalize="none"
                         autoCorrect="off"
@@ -64,6 +64,15 @@ export default function WeatherForm() {
                     }
                     Continue
                 </Button>
+
+                {errorMessage &&
+                    <Alert className="mt-4" variant="destructive">
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                            {errorMessage}
+                        </AlertDescription>
+                    </Alert>
+                }
             </form>
         </div>
     );

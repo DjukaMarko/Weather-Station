@@ -1,8 +1,15 @@
 'use server'
 
 import { signIn, signOut } from '@/auth';
+import { sql } from '@vercel/postgres';
 import { AuthError } from 'next-auth';
- 
+import bcrypt from 'bcryptjs'
+import { redirect } from 'next/navigation';
+import { UserConflictError } from './errors/UserConflictError';
+import { PasswordMismatchError } from './errors/PasswordMismatchError';
+import { FormEmptyError } from './errors/FormEmptyError';
+import { getUser } from './utils';
+
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
@@ -29,4 +36,35 @@ export async function misauthenticate() {
   } catch (error) {
     throw error;
   }
+}
+
+
+export async function register(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirm_password = formData.get("confirm-password") as string;
+    const user = await getUser(email);
+
+    if (email.length === 0 || password.length === 0 || confirm_password.length === 0) throw new FormEmptyError();
+    if (password !== confirm_password) throw new PasswordMismatchError();
+    if (user) throw new UserConflictError();
+
+    bcrypt.genSalt(10, function (err, salt) {
+      bcrypt.hash(password, salt, async function (err, hash) {
+        await sql`INSERT INTO users (Email, Password) VALUES (${email}, ${hash});`;
+      });
+    });
+
+  } catch (error) {
+    const errorClasses = [PasswordMismatchError, UserConflictError, FormEmptyError];
+
+    const isErrorInstanceOfAny = errorClasses.some(errorClass => error instanceof errorClass);
+    if(isErrorInstanceOfAny) return (error as Error).message as string;
+    throw error;
+  }
+  redirect("/login");
 }
