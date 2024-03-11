@@ -14,7 +14,7 @@ export default function Page() {
   }, [width]);
 
   return (
-    <div className="relative w-full h-screen bg-[#d1d1d1] flex flex-col box-border">
+    <div className="fixed w-full h-full bg-[#d1d1d1] flex flex-col box-border">
       {width > 500 ? <Sidebar /> : <MobileNavbar isClicked={isNavbarClicked} setClicked={setNavbarClicked} />}
       <MobileNavbarOptions isClicked={isNavbarClicked} setClicked={setNavbarClicked} />
     </div>
