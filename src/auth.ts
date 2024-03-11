@@ -2,14 +2,23 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 import { z } from 'zod';
-import { sql } from '@vercel/postgres';
-import bcrypt from 'bcryptjs' 
+import bcrypt from 'bcryptjs'
 import { getUser } from './lib/utils';
+import GoogleProvider from "@auth/core/providers/google"
+import GitHubProvider from "@auth/core/providers/github"
 
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_SECRET_ID,
+        }),
+        GitHubProvider({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_SECRET_ID,
+        }),
         Credentials({
             async authorize(credentials) {
                 const parsedCredentials = z

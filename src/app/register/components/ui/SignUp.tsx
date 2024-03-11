@@ -1,5 +1,8 @@
+"use client"
 import Link from "next/link";
 import WeatherForm from "./WeatherForm";
+import SignWithThirdParty from "@/components/ui/SignWithThirdParty";
+
 
 export default function SignUp() {
     return (
@@ -10,8 +13,9 @@ export default function SignUp() {
                     <p className="text-muted-foreground font-[500] text-sm">Enter your email and password below to create your account</p>
                 </div>
                 <WeatherForm />
+                <SignWithThirdParty />
                 <p className="px-8 text-center text-sm text-muted-foreground">
-                    By clicking continue, you agree to our{" "}
+                    By signing in, you agree to our{" "}
                     <Link
                         href="#"
                         className="underline underline-offset-4 hover:text-primary"

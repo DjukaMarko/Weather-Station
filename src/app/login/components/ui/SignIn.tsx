@@ -1,5 +1,8 @@
+"use client"
 import Link from "next/link";
 import SignInForm from "./SignInForm";
+import { Button } from "@/components/ui/button";
+import SignWithThirdParty from "@/components/ui/SignWithThirdParty";
 
 export default function SignIn() {
     return (
@@ -10,8 +13,9 @@ export default function SignIn() {
                     <p className="text-muted-foreground font-[500] text-sm">Enter your email and password below to enter your account</p>
                 </div>
                 <SignInForm />
+                <SignWithThirdParty />
                 <p className="px-8 text-center text-sm text-muted-foreground">
-                    By clicking continue, you agree to our{" "}
+                    By signing in, you agree to our{" "}
                     <Link
                         href="#"
                         className="underline underline-offset-4 hover:text-primary"

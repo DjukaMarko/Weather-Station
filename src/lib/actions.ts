@@ -38,6 +38,22 @@ export async function misauthenticate() {
   }
 }
 
+export async function googleauthenticate() {
+  try {
+    await signIn("google");
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function githubauthenticate() {
+  try {
+    await signIn("github");
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export async function register(
   prevState: string | undefined,
