@@ -130,7 +130,12 @@ export const Icons = {
     </svg>
   ),
   spinner: (props: IconProps) => (
-    <svg
+    <svg xmlns="http://www.w3.org/2000/svg" {...props} width="24" height="24" viewBox="0 0 24 24"><rect width="10" height="10" x="1" y="1" fill="currentColor" rx="1"><animate id="IconifyId18e2ed1e6f0505cef111" fill="freeze" attributeName="x" begin="0;IconifyId18e2ed1e6f0505cef122.end" dur="0.2s" values="1;13"/><animate id="IconifyId18e2ed1e6f0505cef112" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef119.end" dur="0.2s" values="1;13"/><animate id="IconifyId18e2ed1e6f0505cef113" fill="freeze" attributeName="x" begin="IconifyId18e2ed1e6f0505cef120.end" dur="0.2s" values="13;1"/><animate id="IconifyId18e2ed1e6f0505cef114" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef121.end" dur="0.2s" values="13;1"/></rect><rect width="10" height="10" x="1" y="13" fill="currentColor" rx="1"><animate id="IconifyId18e2ed1e6f0505cef115" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef111.end" dur="0.2s" values="13;1"/><animate id="IconifyId18e2ed1e6f0505cef116" fill="freeze" attributeName="x" begin="IconifyId18e2ed1e6f0505cef112.end" dur="0.2s" values="1;13"/><animate id="IconifyId18e2ed1e6f0505cef117" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef113.end" dur="0.2s" values="1;13"/><animate id="IconifyId18e2ed1e6f0505cef118" fill="freeze" attributeName="x" begin="IconifyId18e2ed1e6f0505cef114.end" dur="0.2s" values="13;1"/></rect><rect width="10" height="10" x="13" y="13" fill="currentColor" rx="1"><animate id="IconifyId18e2ed1e6f0505cef119" fill="freeze" attributeName="x" begin="IconifyId18e2ed1e6f0505cef115.end" dur="0.2s" values="13;1"/><animate id="IconifyId18e2ed1e6f0505cef120" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef116.end" dur="0.2s" values="13;1"/><animate id="IconifyId18e2ed1e6f0505cef121" fill="freeze" attributeName="x" begin="IconifyId18e2ed1e6f0505cef117.end" dur="0.2s" values="1;13"/><animate id="IconifyId18e2ed1e6f0505cef122" fill="freeze" attributeName="y" begin="IconifyId18e2ed1e6f0505cef118.end" dur="0.2s" values="1;13"/></rect></svg>
+  ),
+}
+
+/*
+<svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -144,5 +149,5 @@ export const Icons = {
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
-  ),
-}
+
+*/
