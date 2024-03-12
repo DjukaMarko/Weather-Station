@@ -1,14 +1,17 @@
 import { ArrowRightFromLine, Feather, LayoutGrid, LogOut, Settings } from "lucide-react";
 import { motion } from "framer-motion"
 import { useState } from "react";
-import { misauthenticate } from "@/lib/actions";
 import Link from "next/link";
 import { Icons } from "./icons";
 import { MobilePropTypes } from "@/lib/definitions";
 
 
 
-export default function Sidebar({isHovered, isSigningOut, handleSignOut, handleHover}: MobilePropTypes) {
+export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes) {
+    const [isHovered, setIsHovered] = useState(false);
+    const handleHover = () => {
+        setIsHovered(!isHovered);
+    };
     return (
         <motion.div
             initial={{ width: "8rem" }}

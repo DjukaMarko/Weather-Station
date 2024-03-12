@@ -1,14 +1,11 @@
-import { ArrowRightFromLine, Feather, LayoutGrid, LogOut, Menu, Settings, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react";
-import { misauthenticate } from "@/lib/actions";
-import Link from "next/link";
+import { Feather } from "lucide-react";
+import { motion } from "framer-motion"
 import Hamburger from 'hamburger-react'
 import MobileNavbarOptions from "./MobileNavbarOptions";
-import { MTypes, MobilePropTypes } from "@/lib/definitions";
+import { MTypes } from "@/lib/definitions";
 
 
-export default function MobileNavbar({isClicked, setClicked, isHovered, isSigningOut, handleSignOut, handleHover} : MTypes) {
+export default function MobileNavbar({isClicked, setClicked, isSigningOut, handleSignOut} : MTypes) {
 
 
     const handleClick = () => {
