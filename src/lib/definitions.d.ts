@@ -8,5 +8,17 @@ type User = {
     // Add more properties as needed
 };
 
+type MobilePropTypes = {
+    isHovered: boolean,
+    isSigningOut: boolean,
+    handleSignOut: () => void,
+    handleHover: () => void,
+}
+
+interface MTypes extends MobilePropTypes {
+    isClicked: boolean,
+    setClicked:React.Dispatch<React.SetStateAction<boolean>>
+}
+
 // Export the User type so it can be used in other files
-export { User };
+export { User, MobilePropTypes, MTypes };

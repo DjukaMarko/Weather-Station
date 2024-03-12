@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react";
 
 export default function useWindowDimensions() {
@@ -23,7 +24,9 @@ export default function useWindowDimensions() {
       window.addEventListener("resize", handleResize);
        
       // Call handler right away so state gets updated with initial window size
-      handleResize();
+      if(typeof window !== "undefined") {
+        handleResize();
+      }
       
       // Remove event listener on cleanup
       return () => window.removeEventListener("resize", handleResize);

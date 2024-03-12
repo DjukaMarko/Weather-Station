@@ -1,4 +1,7 @@
+
 import { Metadata } from "next";
+import ClientLayout from "./clientlayout";
+
 
 export const metadata: Metadata = {
     title: "Dashboard - Cloudcast",
@@ -12,8 +15,8 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <>
-            {children}
-        </>
+        <ClientLayout>
+            { children }
+        </ClientLayout>
     )
 }

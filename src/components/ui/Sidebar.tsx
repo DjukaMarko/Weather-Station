@@ -4,22 +4,11 @@ import { useState } from "react";
 import { misauthenticate } from "@/lib/actions";
 import Link from "next/link";
 import { Icons } from "./icons";
+import { MobilePropTypes } from "@/lib/definitions";
 
 
 
-export default function Sidebar() {
-
-    const [isHovered, setIsHovered] = useState(false);
-    const [isSigningOut, setSigningOut] = useState(false);
-
-    const handleSignOut = () => {
-        setSigningOut(true);
-        misauthenticate();
-    }
-
-    const handleHover = () => {
-        setIsHovered(!isHovered);
-    };
+export default function Sidebar({isHovered, isSigningOut, handleSignOut, handleHover}: MobilePropTypes) {
     return (
         <motion.div
             initial={{ width: "8rem" }}
@@ -27,7 +16,7 @@ export default function Sidebar() {
             transition={{ duration: 0.3 }}
             className={` relative top-0 bottom-0 h-screen flex flex-col bg-zinc-800 z-[1]`}>
             <div onClick={handleHover} className="absolute cursor-pointer w-full h-full z-[-1]">
-                <div className={`${isHovered && "rotate-180"} w-10 h-10 hover:bg-zinc-700 p-1 rounded-full bg-zinc-800 flex justify-center items-center absolute top-0 bottom-0 my-auto right-[-20px] cursor-pointer`}>
+                <div className={`${isHovered && "rotate-180"} w-10 h-10 bg-zinc-900 hover:bg-zinc-600 p-1 rounded-lg bg-zinc-800 flex justify-center items-center absolute top-0 bottom-0 my-auto right-2 cursor-pointer`}>
                     <ArrowRightFromLine size={18} color="#d1d1d1" />
                 </div>
             </div>
@@ -49,7 +38,7 @@ export default function Sidebar() {
             </div>
             <motion.div onClick={handleSignOut} layout className={`absolute hover:bg-zinc-700 bottom-0 ${isHovered && "space-x-3"} cursor-pointer left-0 right-0 m-auto flex justify-center items-center border-t-zinc-700 border-t-[1px] p-3`}>
                 {isSigningOut ? (
-                    <Icons.spinner color="white" className="h-6 w-6 animate-spin" />
+                    <Icons.spinner color="white" className="h-4 w-4 animate-spin" />
                 ) : (
                     <>
                         <LogOut color="#d1d1d1" />
