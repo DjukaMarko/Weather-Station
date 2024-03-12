@@ -22,11 +22,11 @@ export default function Error({
     }, [error])
 
     return (
-        <Alert variant="destructive" className='absolute right-4 bottom-4'>
+        <Alert variant="destructive" className='fixed right-4 bottom-4'>
             <ExclamationTriangleIcon className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>{error.name}</AlertTitle>
             <AlertDescription>
-                Your session has expired. Please log in again.
+                {error.message}
             </AlertDescription>
         </Alert>
     )

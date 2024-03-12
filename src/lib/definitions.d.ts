@@ -14,4 +14,9 @@ interface MTypes extends MobilePropTypes {
     setClicked:React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export { User, MobilePropTypes, MTypes };
+interface MOptionsTypes extends MobilePropTypes {
+    isClicked: boolean,
+    handleClick: () => void
+}
+
+export { User, MobilePropTypes, MTypes, MOptionsTypes };

@@ -2,15 +2,11 @@ import { AnimatePresence, motion } from "framer-motion"
 import Hamburger from "hamburger-react";
 import { Feather, LayoutGrid, LogOut, Settings } from "lucide-react";
 import { Icons } from "./icons";
+import { MOptionsTypes, MTypes } from "@/lib/definitions";
 
 
 
-export default function MobileNavbarOptions({ isClicked, setClicked, isSigningOut, handleSignOut }: { isClicked: boolean, setClicked: React.Dispatch<React.SetStateAction<boolean>>, isSigningOut: boolean, handleSignOut: () => void }) {
-
-
-    const handleClick = () => {
-        setClicked(!isClicked);
-    };
+export default function MobileNavbarOptions({ isClicked, handleClick, isSigningOut, handleSignOut }: MOptionsTypes) {
     return (
         <AnimatePresence>
             {isClicked &&

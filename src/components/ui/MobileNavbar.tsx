@@ -20,7 +20,7 @@ export default function MobileNavbar({isClicked, setClicked, isSigningOut, handl
             <div onClick={handleClick}>
                 <Hamburger direction="right" size={28} color="#d1d1d1" toggled={isClicked} toggle={setClicked} />
             </div>
-            <MobileNavbarOptions isClicked={isClicked} setClicked={setClicked} isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
+            <MobileNavbarOptions isClicked={isClicked} handleClick={handleClick} isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
         </motion.div>
     )
 }
