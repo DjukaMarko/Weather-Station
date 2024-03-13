@@ -16,9 +16,9 @@ export default function MobileNavbar({isClicked, setClicked, isSigningOut, handl
             initial={{ height: "6rem" }}
             animate={{ height: "5rem" }}
             className="w-full bg-zinc-800 flex justify-between items-center p-6">
-            <Feather color="#d1d1d1" size={28} />
+            <Feather color="#fff" size={28} />
             <div onClick={handleClick}>
-                <Hamburger direction="right" size={28} color="#d1d1d1" toggled={isClicked} toggle={setClicked} />
+                <Hamburger direction="right" size={28} color="#fff" toggled={isClicked} toggle={setClicked} />
             </div>
             <MobileNavbarOptions isClicked={isClicked} handleClick={handleClick} isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
         </motion.div>
