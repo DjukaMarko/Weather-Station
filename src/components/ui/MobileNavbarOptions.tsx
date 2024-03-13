@@ -15,7 +15,7 @@ export default function MobileNavbarOptions({ isClicked, handleClick, isSigningO
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: -100, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute inset-0 w-full h-full bg-zinc-800 flex justify-center items-center">
+                    className="fixed inset-0 w-full h-full bg-zinc-800 flex justify-center items-center">
                     <div className="absolute bottom-5">
                         <Feather color="#d1d1d1" size={32} />
                     </div>
