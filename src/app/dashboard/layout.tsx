@@ -1,6 +1,7 @@
 
 import { Metadata } from "next";
 import ClientLayout from "./clientlayout";
+import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function Layout({
 }>) {
     return (
         <ClientLayout>
-            { children }
+            {children}
         </ClientLayout>
     )
 }

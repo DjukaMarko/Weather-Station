@@ -2,8 +2,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import Hamburger from "hamburger-react";
 import { Feather, LayoutGrid, LogOut, Settings } from "lucide-react";
 import { Icons } from "./icons";
-import { MOptionsTypes, MTypes } from "@/lib/definitions";
-
+import { MOptionsTypes } from "@/lib/definitions";
 
 
 export default function MobileNavbarOptions({ isClicked, handleClick, isSigningOut, handleSignOut }: MOptionsTypes) {
