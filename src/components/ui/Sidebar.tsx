@@ -8,13 +8,13 @@ import { MobilePropTypes } from "@/lib/definitions";
 
 
 export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes) {
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(true);
     const handleHover = () => {
         setIsHovered(!isHovered);
     };
     return (
         <motion.div
-            initial={{ width: "8rem" }}
+            initial={{ width: "17rem" }}
             animate={{ width: isHovered ? "15rem" : "6rem" }}
             transition={{ duration: 0.3 }}
             className={` sticky top-0 left-0 bottom-0 h-screen flex flex-col bg-zinc-800 z-[1]`}>
