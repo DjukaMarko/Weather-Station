@@ -39,10 +39,10 @@ export default function Page() {
 
 
   return (
-    <div className="z-[-1] w-full h-full bg-zinc-900 grid grid-cols-1 grid-rows-2 gap-2 md:gap-4 xl:grid-cols-2 2xl:grid-cols-3 p-2 md:p-4 overflow-y-scroll">
+    <div className="z-[-1] w-full h-full bg-zinc-900 grid grid-cols-1 grid-rows-4 gap-2 md:gap-4 xl:grid-cols-2 2xl:grid-cols-3 p-2 md:p-4">
       <LandingWeather isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
 
-      <div className="relative w-full h-full col-start-1">
+      <div className="relative w-full h-full col-start-1 row-start-3 row-span-2">
         <div className="relative w-full h-full">
           <div className="w-full h-full bg-zinc-800 rounded-2xl cursor-pointer overflow-hidden relative">
             <div className="absolute z-[1] w-full h-full bg-gradient-to-b from-transparent to-black/70"></div>
@@ -60,8 +60,8 @@ export default function Page() {
                   <div key={index} className="flex w-full justify-between items-center text-white">
                     <CloudDrizzle size={width > 640 ? 50 : 40} color="#fff" />
                     <div className="flex items-end">
-                      <p className="text-sm sm:text-lg lg:text-2xl">+29°/</p>
-                      <p className="text-xs sm:text-base lg:text-lg">+18°</p>
+                      <p className="text-sm sm:text-lg lg:text-2xl">29°/</p>
+                      <p className="text-xs sm:text-base lg:text-lg">18°</p>
                     </div>
                     <p className="text-sm sm:text-base lg:text-lg">25 july</p>
                     <p className="text-sm sm:text-base lg:text-lg">Tuesday</p>
