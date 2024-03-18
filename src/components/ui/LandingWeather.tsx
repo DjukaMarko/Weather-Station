@@ -3,7 +3,7 @@ import { CalendarDays, CloudDrizzle, CloudHail, MapPin, Navigation, Search, X } 
 import { useState } from "react"
 
 
-export default function LandingWeather({ isSearchClicked, width, setSearchClicked } : { isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function LandingWeather({ weatherData, isSearchClicked, width, setSearchClicked } : { weatherData: { [index: string]: (string | number) } , isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
     
     const [isLocatorSet, setLocator] = useState(false);
     const handleLocator = () => {
@@ -44,7 +44,7 @@ export default function LandingWeather({ isSearchClicked, width, setSearchClicke
                 <div className="w-full flex flex-col space-y-2 pt-4 border-t-[1px] border-t-[#fff]">
                     <div className="flex space-x-2 items-center">
                         <MapPin size={20} color="#fff" />
-                        <p className="text-[#fff] text-xs sm:text-base">Florida, US</p>
+                        <p className="text-[#fff] text-xs sm:text-base">{weatherData["_normalized_city"]}, {weatherData["ISO_3166-1_alpha-2"]}</p>
                     </div>
                     <div className="flex space-x-2 items-center">
                         <CalendarDays color="#fff" size={20} />

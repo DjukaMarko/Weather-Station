@@ -7,7 +7,7 @@ import { CloudDrizzle } from "lucide-react";
 
 export default function Page() {
   const [isLoadingData, setLoadingData] = useState<boolean>(true);
-  const [weatherData, setWeatherData] = useState<any>({});
+  const [weatherData, setWeatherData] = useState<{ [index: string]: (string | number) }>({});
   const [isSearchClicked, setSearchClicked] = useState(true);
   const { width } = useWindowDimensions();
 
@@ -20,12 +20,20 @@ export default function Page() {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
 
-          /*const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&appid=${process.env.OPENWEATHER_SECRET}`);
-          const data = await response.json();
+          /*const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely%2Chourly&appid=${process.env.OPENWEATHER_SECRET}`);
+          const data = await response.json();*/
 
-          console.log(data);
+          const responseTown = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&key=${process.env.OPENCAGE_API_KEY}`);
+          const dataTown = (await responseTown.json()).results[0];
 
-          setWeatherData(data);*/
+          //console.log(data);
+          const normalizedCity = {
+            "_normalized_city" : dataTown.components["_normalized_city"],
+            "ISO_3166-1_alpha-2" : dataTown.components["ISO_3166-1_alpha-2"]
+          }
+
+          setWeatherData(normalizedCity)
+          //setWeatherData(prev => ({ ...prev, data }));
           setLoadingData(false);
 
         }, () => {
@@ -39,8 +47,8 @@ export default function Page() {
 
 
   return (
-    <div className="z-[-1] w-full h-full bg-zinc-900 grid grid-cols-1 grid-rows-4 gap-2 md:gap-4 xl:grid-cols-2 2xl:grid-cols-3 p-2 md:p-4">
-      <LandingWeather isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
+    <div className="z-[-1] w-full h-full bg-zinc-900 grid grid-cols-1 grid-rows-4 gap-2 xl:grid-cols-2 2xl:grid-cols-3 p-2">
+      <LandingWeather weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
 
       <div className="relative w-full h-full col-start-1 row-start-3 row-span-2">
         <div className="relative w-full h-full">
@@ -55,7 +63,7 @@ export default function Page() {
               </div>
             </div>
             <div className="flex flex-col space-y-4 p-6 md:px-10 md:py-7">
-              {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((el, index) => {
+              {[1, 1, 1, 1, 1, 1].map((el, index) => {
                 return (
                   <div key={index} className="flex w-full justify-between items-center text-white">
                     <CloudDrizzle size={width > 640 ? 50 : 40} color="#fff" />
