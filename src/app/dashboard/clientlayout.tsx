@@ -20,16 +20,16 @@ export default function ClientLayout({
     }, [width]);
 
     const [isSigningOut, setSigningOut] = useState(false);
-    
+
     const handleSignOut = () => {
         setSigningOut(true);
         misauthenticate();
     }
-    
+
     return (
         <div className="fixed w-full h-full flex flex-col sm:flex-row box-border overflow-y-scroll">
             <div className="hidden sm:block">
-                <Sidebar isSigningOut={isSigningOut} handleSignOut={handleSignOut}/>
+                <Sidebar isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
             </div>
             <div className="block sm:hidden">
                 <MobileNavbar isSigningOut={isSigningOut} handleSignOut={handleSignOut} isClicked={isNavbarClicked} setClicked={setNavbarClicked} />
