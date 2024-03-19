@@ -7,19 +7,21 @@ export default function LandingDailyInfo({ width }: { width: number }) {
     return (
         <div className="relative w-full h-full col-start-1 row-start-3 row-span-2">
             <Modal isShown={isShownModal} setShown={setShownModal}>
-                {[1, 1, 1, 1, 1, 1, 1].map((el, index) => {
-                    return (
-                        <div key={index} className="flex w-full space-x-7 md:space-x-12 my-2 md:my-3 items-center text-white">
-                            <CloudDrizzle size={width > 640 ? 50 : 40} color="#fff" />
-                            <div className="flex items-end">
-                                <p className="text-sm sm:text-lg lg:text-2xl">29°/</p>
-                                <p className="text-xs sm:text-base lg:text-lg">18°</p>
+                <div className="w-full h-full divide-y divide-zinc-700">
+                    {[1, 1, 1, 1, 1, 1, 1].map((el, index) => {
+                        return (
+                            <div key={index} className="flex w-full space-x-7 md:space-x-12 py-1 md:py-2 items-center text-white">
+                                <CloudDrizzle size={width > 640 ? 50 : 35} color="#fff" />
+                                <div className="flex items-end">
+                                    <p className="text-xs sm:text-lg lg:text-2xl">29°/</p>
+                                    <p className="text-xs sm:text-base lg:text-lg">18°</p>
+                                </div>
+                                <p className="text-xs sm:text-base lg:text-lg">25 july</p>
+                                <p className="text-xs sm:text-base lg:text-lg">Tuesday</p>
                             </div>
-                            <p className="text-sm sm:text-base lg:text-lg">25 july</p>
-                            <p className="text-sm sm:text-base lg:text-lg">Tuesday</p>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </Modal>
             <div onClick={() => setShownModal(true)} className="relative w-full h-full">
                 <div className="w-full h-full bg-zinc-800 rounded-2xl cursor-pointer overflow-hidden relative">
@@ -32,10 +34,10 @@ export default function LandingDailyInfo({ width }: { width: number }) {
                             <p className="text-white text-xs md:text-xs">Thunder Storm day</p>
                         </div>
                     </div>
-                    <div className="flex flex-col space-y-4 p-6 md:px-10 md:py-7">
+                    <div className="flex flex-col p-6 md:px-10 md:py-7 divide-y divide-zinc-700">
                         {[1, 1, 1, 1, 1, 1].map((el, index) => {
                             return (
-                                <div key={index} className="flex w-full justify-between items-center text-white">
+                                <div key={index} className="py-2 flex w-full justify-between items-center text-white">
                                     <CloudDrizzle size={width > 640 ? 50 : 40} color="#fff" />
                                     <div className="flex items-end">
                                         <p className="text-sm sm:text-lg lg:text-2xl">29°/</p>
