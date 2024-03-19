@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 export default function Modal({ children, isShown, setShown }: { children: React.ReactNode, isShown: boolean, setShown: React.Dispatch<React.SetStateAction<boolean>> | null }) {
-    const handleShown = () => {
+    
+    const handleShown: () => void = () => {
         if (!setShown) return;
         setShown(prev => !prev);
     }
