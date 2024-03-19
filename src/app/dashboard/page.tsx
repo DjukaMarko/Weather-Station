@@ -48,7 +48,7 @@ export default function Page() {
 
 
   return (
-    <div className="relative z-[-1] w-full h-full bg-zinc-900 grid grid-cols-1 grid-rows-4 gap-2 xl:grid-cols-2 2xl:grid-cols-3 p-2">
+    <div className="relative z-[-1] w-full h-full grid grid-cols-1 grid-rows-4 gap-2 xl:grid-cols-2 2xl:grid-cols-3 p-2">
       <LandingWeather weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
       <LandingDailyInfo width={width} />
     </div>

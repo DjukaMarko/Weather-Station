@@ -10,7 +10,7 @@ export default function LandingDailyInfo({ width }: { width: number }) {
                 <div className="w-full h-full divide-y divide-zinc-700">
                     {[1, 1, 1, 1, 1, 1, 1].map((el, index) => {
                         return (
-                            <div key={index} className="flex w-full space-x-7 md:space-x-12 py-1 md:py-2 items-center text-white">
+                            <div key={index} className="flex w-full space-x-7 md:space-x-12 py-2 items-center text-white">
                                 <CloudDrizzle size={width > 640 ? 50 : 35} color="#fff" />
                                 <div className="flex items-end">
                                     <p className="text-xs sm:text-lg lg:text-2xl">29°/</p>
