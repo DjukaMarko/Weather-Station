@@ -9,7 +9,7 @@ export default function LandingDailyInfo({ width }: { width: number }) {
             <Modal isShown={isShownModal} setShown={setShownModal}>
                 {[1, 1, 1, 1, 1, 1, 1].map((el, index) => {
                     return (
-                        <div key={index} className="flex w-full space-x-7 md:space-x-12 my-1 md:my-3 items-center text-white">
+                        <div key={index} className="flex w-full space-x-7 md:space-x-12 my-2 md:my-3 items-center text-white">
                             <CloudDrizzle size={width > 640 ? 50 : 40} color="#fff" />
                             <div className="flex items-end">
                                 <p className="text-sm sm:text-lg lg:text-2xl">29°/</p>
