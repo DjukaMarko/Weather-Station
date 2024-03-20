@@ -16,6 +16,16 @@ export default function Page() {
     handleLocationClick();
   }, []);
 
+
+  function convertKelvinToCel(kelvin: number): number {
+    return kelvin - 273.15;
+  }
+
+  function capitalizeWords(input: string): string {
+    return input.replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+
   function handleLocationClick() {
     setLoadingData(true);
     if (navigator.geolocation) {
@@ -48,8 +58,8 @@ export default function Page() {
 
   return (
     <div className="relative z-[-1] w-full h-full grid grid-cols-1 grid-rows-4 gap-2 xl:grid-cols-2 2xl:grid-cols-3 p-2">
-      <LandingWeather handleLocationClick={handleLocationClick} isLoading={isLoadingData} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
-      <LandingDailyInfo weatherData={weatherData} isLoading={isLoadingData} width={width} />
+      <LandingWeather convertKelvinToCel={convertKelvinToCel} capitalizeWords={capitalizeWords} handleLocationClick={handleLocationClick} isLoading={isLoadingData} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
+      <LandingDailyInfo convertKelvinToCel={convertKelvinToCel} capitalizeWords={capitalizeWords} weatherData={weatherData} isLoading={isLoadingData} width={width} />
     </div>
   );
 }

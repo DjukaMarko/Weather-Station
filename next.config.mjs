@@ -6,7 +6,12 @@ const nextConfig = {
     },
     images: {
         domains: ['openweathermap.org'],
-    }
+    },
+    logging: {
+        fetches: {
+            fullUrl: true,
+        }
+    },
 };
 
 export default nextConfig;
