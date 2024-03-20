@@ -26,7 +26,7 @@ export default function Modal({ children, isShown, setShown }: { children: React
                             animate={{ scale: 1 }}
                             exit={{ scale: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="max-h-96 m-6 bg-zinc-800 px-10 py-4 md:px-16 md:py-8 rounded-xl z-[6] overflow-y-scroll cursor-default">
+                            className="w-full sm:w-auto max-h-96 m-4 bg-zinc-800 px-6 py-3 md:px-12 md:py-6 rounded-xl z-[6] overflow-y-scroll cursor-default">
                             {children}
                         </motion.div>
                     </div>

@@ -22,7 +22,7 @@ export default function Error({
     }, [error])
 
     return (
-        <Alert variant="destructive" className='fixed right-4 bottom-4'>
+        <Alert variant="destructive" className='w-[350px] fixed right-4 bottom-4'>
             <ExclamationTriangleIcon className="h-4 w-4" />
             <AlertTitle>{error.name}</AlertTitle>
             <AlertDescription>

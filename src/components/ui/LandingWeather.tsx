@@ -1,40 +1,72 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { CalendarDays, CloudDrizzle, CloudHail, MapPin, Navigation, Search, X } from "lucide-react"
-import { useState } from "react"
+import Image from "next/image";
+import { useEffect, useState } from "react"
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 
-export default function LandingWeather({ isLoading, weatherData, isSearchClicked, width, setSearchClicked }: { isLoading: boolean, weatherData: { [index: string]: (string | number) }, isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
-
+export default function LandingWeather({ handleLocationClick, isLoading, weatherData, isSearchClicked, width, setSearchClicked }: { handleLocationClick: () => void, isLoading: boolean, weatherData: { [index: string]: (string | number) }, isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
     return (
         <div className="relative w-full h-full overflow-hidden row-span-2">
             <div className="relative w-full h-full bg-zinc-800 rounded-2xl flex flex-col justify-end cursor-default p-6">
-                {isLoading ? <SkeletonLoader /> : <WeatherWithData weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+            </div>
+        </div>
+    )
+}
+
+function convertKelvinToCel(kelvin: number): number {
+    return kelvin - 273.15;
+}
+
+function capitalizeWords(input: string): string {
+    return input.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function convertTimestampToDate(timestamp: number) {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleDateString("en-GB");
+}
+
+function convertTimestampToTimeAMPM(timestamp: number): string {
+    const date = new Date(timestamp * 1000);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ' ' + ampm;
+
+    return timeString;
+}
+
+
+function SkeletonLoader() {
+    return (
+        <div className="relative w-full h-full flex flex-col justify-end">
+            <div className="absolute right-4 top-4 w-[130px] sm:w-[200px] h-[35px]">
+                <Skeleton baseColor="#3f3f46" highlightColor="#52525b" className="w-full h-full" />
+            </div>
+            <Skeleton baseColor="#3f3f46" highlightColor="#52525b" className="mb-3" width={100} height={48} />
+            <Skeleton baseColor="#3f3f46" highlightColor="#52525b" className="mb-3" width={100} height={64} />
+            <Skeleton baseColor="#3f3f46" highlightColor="#52525b" className="mb-3" height={32} />
+            <div className="w-full border-t-[1px] border-t-zinc-700 pt-3">
+                <Skeleton baseColor="#3f3f46" highlightColor="#52525b" />
+                <Skeleton baseColor="#3f3f46" highlightColor="#52525b" />
             </div>
         </div>
     )
 }
 
 
-function SkeletonLoader() {
-    return (
-        <SkeletonTheme borderRadius={8} baseColor="#3f3f46" highlightColor="#52525b">
-            <Skeleton className="mb-3" width={100} height={48} />
-            <Skeleton className="mb-3" width={100} height={64} />
-            <Skeleton className="mb-3" height={32} />
-            <div className="w-full border-t-[1px] border-t-zinc-700 pt-3">
-                <Skeleton />
-                <Skeleton />
-            </div>
-        </SkeletonTheme>
-    )
-}
-
-
-function WeatherWithData({ weatherData, isSearchClicked, setSearchClicked, width }: { weatherData: { [index: string]: (string | number) }, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number }) {
+function WeatherWithData({ handleLocationClick, weatherData, isSearchClicked, setSearchClicked, width }: { handleLocationClick: () => void, weatherData: any, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number }) {
+    if(weatherData["data"] === undefined) return null;
+    
     const [isLocatorSet, setLocator] = useState(false);
     const handleLocator = () => {
         setLocator(true);
+        handleLocationClick();      
     }
 
     return (
@@ -56,14 +88,14 @@ function WeatherWithData({ weatherData, isSearchClicked, setSearchClicked, width
             </motion.div>
 
             <div className="w-full flex flex-col space-y-3 pb-4">
-                <CloudDrizzle size={width > 640 ? 80 : 48} color="#fff" />
+                <Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["current"]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 80 : 60} height={width > 640 ? 80 : 60} alt="open2" />
                 <div className="text-[#fff] flex">
-                    <p className="text-5xl sm:text-6xl">28</p>
+                    <p className="text-5xl sm:text-6xl">{Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"]))}</p>
                     <p className="text-2xl sm:text-2xl">°C</p>
                 </div>
                 <div className="flex space-x-2 items-center">
-                    <CloudHail color="#fff" size={30} />
-                    <p className="text-[#fff] text-xs sm:text-lg">Rainy Storm Clouds</p>
+                    <Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["current"]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 50 : 35} height={width > 640 ? 50: 35} alt="open1" />
+                    <p className="text-[#fff] text-xs sm:text-lg">{capitalizeWords(weatherData["data"]["current"]["weather"][0]["description"])}</p>
                 </div>
             </div>
             <div className="w-full flex flex-col space-y-2 pt-4 border-t-[1px] border-t-zinc-700">
@@ -73,8 +105,8 @@ function WeatherWithData({ weatherData, isSearchClicked, setSearchClicked, width
                 </div>
                 <div className="flex space-x-2 items-center">
                     <CalendarDays color="#fff" size={20} />
-                    <p className="text-[#fff] text-xs sm:text-base">24 July, 2022</p>
-                    <p className="text-[#fff] text-xs sm:text-base font-bold">5:01 AM</p>
+                    <p className="text-[#fff] text-xs sm:text-base">{convertTimestampToDate(weatherData["data"]["current"]["dt"])}</p>
+                    <p className="text-[#fff] text-xs sm:text-base font-bold">{convertTimestampToTimeAMPM(weatherData["data"]["current"]["dt"])}</p>
                 </div>
             </div>
         </>
