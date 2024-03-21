@@ -7,10 +7,11 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function LandingWeather({ convertKelvinToCel, capitalizeWords, handleLocationClick, isLoading, weatherData, isSearchClicked, width, setSearchClicked }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, isLoading: boolean, weatherData: { [index: string]: (string | number) }, isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [isLocatorSet, setLocator] = useState(false); // This is a state that is used to determine if the locator button is clicked or not
+    const [inputValue, setInputValue] = useState(''); // This is a state that is used to store the value of the input field
     return (
         <div className="relative w-full h-full overflow-hidden row-span-2">
             <div className="relative w-full h-full bg-zinc-800 rounded-2xl flex flex-col justify-end cursor-default p-6">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
             </div>
         </div>
     )
@@ -53,9 +54,8 @@ function SkeletonLoader() {
 }
 
 
-function WeatherWithData({ capitalizeWords, convertKelvinToCel, isLocatorSet, setLocator, handleLocationClick, weatherData, isSearchClicked, setSearchClicked, width }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, weatherData: any, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number, isLocatorSet: boolean, setLocator: React.Dispatch<React.SetStateAction<boolean>>}) {
+function WeatherWithData({ inputValue, setInputValue, capitalizeWords, convertKelvinToCel, isLocatorSet, setLocator, handleLocationClick, weatherData, isSearchClicked, setSearchClicked, width }: { inputValue: string, setInputValue: React.Dispatch<React.SetStateAction<string>> ,capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, weatherData: any, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number, isLocatorSet: boolean, setLocator: React.Dispatch<React.SetStateAction<boolean>>}) {
     if(weatherData["data"] === undefined) return null;
-    const [inputValue, setInputValue] = useState('');
     
     const handleLocator = () => {
         setLocator(true);
