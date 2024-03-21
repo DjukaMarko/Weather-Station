@@ -21,11 +21,11 @@ def export_to_sql(filename, data):
 # Function to import SQL data into PostgreSQL database
 def import_to_postgres(filename):
     conn = psycopg2.connect(
-        dbname="verceldb",
-        user="default",
-        password="kZ5tGiyY7lCr",
-        host="ep-red-mode-a4uukiro-pooler.us-east-1.aws.neon.tech",
-        port="5432"
+        dbname="",
+        user="",
+        password="",
+        host="",
+        port=""
     )
     cursor = conn.cursor()
     with open(filename, 'r') as file:
@@ -36,9 +36,9 @@ def import_to_postgres(filename):
 
 # Main function
 def main():
-    json_file = '/home/djuka/Desktop/weather-station/src/lib/scripts/cities.json'
+    json_file = ''
     chunk_size = 1000  # Adjust this according to your needs
-    output_dir = '/home/djuka/Desktop/weather-station/src/lib/scripts/sql_files'
+    output_dir = ''
 
     with open(json_file, 'r') as file:
         data = json.load(file)
