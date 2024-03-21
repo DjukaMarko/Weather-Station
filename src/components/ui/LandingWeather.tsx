@@ -55,28 +55,64 @@ function SkeletonLoader() {
 
 function WeatherWithData({ capitalizeWords, convertKelvinToCel, isLocatorSet, setLocator, handleLocationClick, weatherData, isSearchClicked, setSearchClicked, width }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, weatherData: any, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number, isLocatorSet: boolean, setLocator: React.Dispatch<React.SetStateAction<boolean>>}) {
     if(weatherData["data"] === undefined) return null;
+    const [inputValue, setInputValue] = useState('');
     
     const handleLocator = () => {
         setLocator(true);
         handleLocationClick();      
     }
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInputValue(value);
+    }
+
+    const handleSearchClick = () => {
+        setSearchClicked(prevVal => !prevVal)
+        setInputValue('');
+    }
+
     return (
         <>
-            <motion.div className="absolute right-0 top-6 group rounded-full cursor-pointer flex flex-row-reverse items-center pr-4 md:p-6">
-                <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2" onClick={() => setSearchClicked(prevVal => !prevVal)}>
-                    {isSearchClicked ? <X color="#fff" size={22} /> : <Search color="#fff" size={22} />}
-                </motion.div>
+            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 pr-4 md:p-6">
+                <div className="flex flex-row-reverse items-center cursor-pointer">
+                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2" onClick={handleSearchClick}>
+                        {isSearchClicked ? <X color="#fff" size={22} /> : <Search color="#fff" size={22} />}
+                    </motion.div>
 
+                    <AnimatePresence>
+                        {isSearchClicked && <motion.input value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: width > 640 ? "100%" : "60%" }}
+                            exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
+                    </AnimatePresence>
+
+                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2">
+                        <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={22} />
+                    </motion.div>
+                </div>
                 <AnimatePresence>
-                    {isSearchClicked && <motion.input placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
-                        animate={{ opacity: 1, width: width > 640 ? "100%" : "60%" }}
-                        exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
-                </AnimatePresence>
+                    {width > 640 && isSearchClicked && inputValue !== '' && (
+                        <motion.div initial={{ height:0 }} animate={{ height:"auto" }} exit={{ height:0 }} transition={{ duration: 0.1 }} layout className="w-full max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
+                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                <p className="text-sm">Trieste, Italy</p>
+                            </motion.div>
 
-                <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2">
-                    <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={22} />
-                </motion.div>
+                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                <p className="text-sm">Trieste, Italy</p>
+                            </motion.div>
+
+                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                <p className="text-sm">Trieste, Italy</p>
+                            </motion.div>
+
+                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                <p className="text-sm">Trieste, Italy</p>
+                            </motion.div>
+
+                
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </motion.div>
 
             <div className="w-full flex flex-col space-y-3 pb-4">

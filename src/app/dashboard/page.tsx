@@ -50,8 +50,6 @@ export default function Page() {
 
         setLoadingData(false);
 
-        console.log(data);
-
       }, () => {
         throw new Error("Something went wrong while trying to access your location");
       });

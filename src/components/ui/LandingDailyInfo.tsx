@@ -10,6 +10,7 @@ import { useState } from "react"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, isLoading: boolean, width: number, weatherData: any }) {
     const [isShownModal, setShownModal] = useState(false);
@@ -94,17 +95,17 @@ function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWee
 function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal, width, weatherData }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, setShownModal: React.Dispatch<React.SetStateAction<boolean>>, width: number, weatherData: any }) {
     if (weatherData["data"] === undefined) return null;
     return (
-        <div onClick={() => setShownModal(true)}>
-            <div className="absolute z-[1] w-full h-full bg-gradient-to-b from-transparent to-black/70"></div>
+        <div>
+            <motion.div layout onClick={() => setShownModal(true)} className="absolute z-[1] hover:to-black/80 w-full h-full bg-gradient-to-b from-transparent to-black/70"></motion.div>
             <div>
-                <div className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-4 p-4">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale:1.04 }} className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-4 p-4">
                     <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 100 : 70} height={width > 640 ? 100 : 70} alt="open3" />
                     <div className="flex flex-col">
                         <p className="text-white text-xs md:text-sm">Tomorrow</p>
                         <p className="text-white text-md md:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][1]["temp"]["day"]))}°</p>
                         <p className="text-white text-xs md:text-xs">{capitalizeWords(weatherData["data"]["daily"][1]["weather"][0]["description"])}</p>
                     </div>
-                </div>
+                </motion.div>
                 <div className="px-6 py-2">
                     <Table>
                         <TableBody className="text-white">
