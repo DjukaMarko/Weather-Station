@@ -80,13 +80,13 @@ function WeatherWithData({ capitalizeWords, convertKelvinToCel, isLocatorSet, se
             </motion.div>
 
             <div className="w-full flex flex-col space-y-3 pb-4">
-                <Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["current"]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 80 : 60} height={width > 640 ? 80 : 60} alt="open2" />
+                <Image className="relative right-3" src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 80 : 60} height={width > 640 ? 80 : 60} alt="open2" />
                 <div className="text-[#fff] flex">
                     <p className="text-5xl sm:text-6xl">{Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"]))}</p>
                     <p className="text-2xl sm:text-2xl">°C</p>
                 </div>
                 <div className="flex space-x-2 items-center">
-                    <Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["current"]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 50 : 35} height={width > 640 ? 50: 35} alt="open1" />
+                    <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 50 : 35} height={width > 640 ? 50: 35} alt="open1" />
                     <p className="text-[#fff] text-xs sm:text-lg">{capitalizeWords(weatherData["data"]["current"]["weather"][0]["description"])}</p>
                 </div>
             </div>

@@ -22,7 +22,7 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
                             {weatherData["data"]["daily"].map((el: any, index: number) => {
                                 return (
                                     <TableRow className="border-zinc-700 border-b-[1px] hover:bg-zinc-900" key={index}>
-                                        <TableCell className="md:px-10"><Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
+                                        <TableCell className="md:px-10"><Image src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
                                         <TableCell className="md:px-10">
                                             <div className="flex items-end">
                                                 <p className="text-sm sm:text-lg lg:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["max"]))}°/</p>
@@ -98,7 +98,7 @@ function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal,
             <div className="absolute z-[1] w-full h-full bg-gradient-to-b from-transparent to-black/70"></div>
             <div>
                 <div className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-4 p-4">
-                    <Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 100 : 70} height={width > 640 ? 100 : 70} alt="open3" />
+                    <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 100 : 70} height={width > 640 ? 100 : 70} alt="open3" />
                     <div className="flex flex-col">
                         <p className="text-white text-xs md:text-sm">Tomorrow</p>
                         <p className="text-white text-md md:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][1]["temp"]["day"]))}°</p>
@@ -111,7 +111,7 @@ function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal,
                             {weatherData["data"]["daily"].map((el: any, index: number) => {
                                 return (
                                     <TableRow className="border-zinc-700 border-b-[1px]" key={index}>
-                                        <TableCell><Image src={`https://openweathermap.org/img/wn/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}@2x.png`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
+                                        <TableCell><Image src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
                                         <TableCell>
                                             <div className="flex items-end">
                                                 <p className="text-sm sm:text-lg lg:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["max"]))}°/</p>
