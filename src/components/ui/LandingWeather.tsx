@@ -1,17 +1,69 @@
+import { querySearchAutoCompletion } from "@/lib/actions";
+import { QueryResultRow } from "@vercel/postgres";
 import { AnimatePresence, motion } from "framer-motion"
 import { CalendarDays, MapPin, Navigation, Search, X } from "lucide-react"
 import Image from "next/image";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 
-export default function LandingWeather({ convertKelvinToCel, capitalizeWords, handleLocationClick, isLoading, weatherData, isSearchClicked, width, setSearchClicked }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, isLoading: boolean, weatherData: { [index: string]: (string | number) }, isSearchClicked: boolean, width: number, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>> }) {
+interface typeLandingWeatherWithData {
+    setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>,
+    searchAutoCompletion: QueryResultRow[],
+    inputValue: string,
+    setInputValue: React.Dispatch<React.SetStateAction<string>>,
+    capitalizeWords: (input: string) => string,
+    convertKelvinToCel: (kelvin: number) => number,
+    handleLocationClick: () => void,
+    weatherData: any,
+    isSearchClicked: boolean,
+    setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>,
+    width: number,
+    isLocatorSet: boolean,
+    setLocator: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface typeLandingWeather {
+    setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>,
+    capitalizeWords: (input: string) => string,
+    convertKelvinToCel: (kelvin: number) => number,
+    handleLocationClick: () => void,
+    isLoading: boolean,
+    weatherData: any,
+    isSearchClicked: boolean,
+    width: number,
+    setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function LandingWeather({ 
+    setSelectedCity, 
+    convertKelvinToCel, 
+    capitalizeWords, 
+    handleLocationClick, 
+    isLoading, 
+    weatherData, 
+    isSearchClicked, 
+    width, 
+    setSearchClicked }: typeLandingWeather) {
+        
     const [isLocatorSet, setLocator] = useState(false); // This is a state that is used to determine if the locator button is clicked or not
     const [inputValue, setInputValue] = useState(''); // This is a state that is used to store the value of the input field
+    const [searchAutoCompletion, setSearchAutoCompletion] = useState<QueryResultRow[]>([]); // This is a state that is used to store the search auto completion data
+
+    useEffect(() => {
+        const fetchSearchAutoCompletion = async () => {
+            if(inputValue === '') return;
+            const response = await querySearchAutoCompletion(inputValue);
+            setSearchAutoCompletion(response);
+        }
+        fetchSearchAutoCompletion();
+    }, [inputValue]);
+
+    
     return (
         <div className="relative w-full h-full overflow-hidden row-span-2">
             <div className="relative w-full h-full bg-zinc-800 rounded-2xl flex flex-col justify-end cursor-default p-6">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
             </div>
         </div>
     )
@@ -54,7 +106,21 @@ function SkeletonLoader() {
 }
 
 
-function WeatherWithData({ inputValue, setInputValue, capitalizeWords, convertKelvinToCel, isLocatorSet, setLocator, handleLocationClick, weatherData, isSearchClicked, setSearchClicked, width }: { inputValue: string, setInputValue: React.Dispatch<React.SetStateAction<string>> ,capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, handleLocationClick: () => void, weatherData: any, isSearchClicked: boolean, setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>, width: number, isLocatorSet: boolean, setLocator: React.Dispatch<React.SetStateAction<boolean>>}) {
+function WeatherWithData({ 
+    setSelectedCity, 
+    searchAutoCompletion, 
+    inputValue, 
+    setInputValue, 
+    capitalizeWords, 
+    convertKelvinToCel, 
+    isLocatorSet, 
+    setLocator, 
+    handleLocationClick, 
+    weatherData, 
+    isSearchClicked, 
+    setSearchClicked, 
+    width }: typeLandingWeatherWithData) {
+
     if(weatherData["data"] === undefined) return null;
     
     const handleLocator = () => {
@@ -93,23 +159,11 @@ function WeatherWithData({ inputValue, setInputValue, capitalizeWords, convertKe
                 <AnimatePresence>
                     {width > 640 && isSearchClicked && inputValue !== '' && (
                         <motion.div initial={{ height:0 }} animate={{ height:"auto" }} exit={{ height:0 }} transition={{ duration: 0.1 }} layout className="w-full max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
-                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
-                                <p className="text-sm">Trieste, Italy</p>
-                            </motion.div>
-
-                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
-                                <p className="text-sm">Trieste, Italy</p>
-                            </motion.div>
-
-                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
-                                <p className="text-sm">Trieste, Italy</p>
-                            </motion.div>
-
-                            <motion.div layout className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
-                                <p className="text-sm">Trieste, Italy</p>
-                            </motion.div>
-
-                
+                            {searchAutoCompletion.map((item, index) => (
+                                <motion.div onClick={() => setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                    <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {item["lat"]}, {item["lon"]} </p>
+                                </motion.div>
+                            ))}             
                         </motion.div>
                     )}
                 </AnimatePresence>

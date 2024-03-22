@@ -12,7 +12,23 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, isLoading: boolean, width: number, weatherData: any }) {
+interface typeLandingDailyInfo {
+    capitalizeWords: (input: string) => string,
+    convertKelvinToCel: (kelvin: number) => number,
+    isLoading: boolean,
+    width: number,
+    weatherData: any
+}
+
+interface typeDailyInfoData {
+    capitalizeWords: (input: string) => string,
+    convertKelvinToCel: (kelvin: number) => number,
+    setShownModal: React.Dispatch<React.SetStateAction<boolean>>,
+    width: number,
+    weatherData: any
+}
+
+export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: typeLandingDailyInfo) {
     const [isShownModal, setShownModal] = useState(false);
     return (
         <div className="relative w-full h-full col-start-1 row-start-3 row-span-2">
@@ -92,7 +108,7 @@ function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWee
     };
 }
 
-function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal, width, weatherData }: { capitalizeWords: (input:string) => string, convertKelvinToCel: (kelvin:number) => number, setShownModal: React.Dispatch<React.SetStateAction<boolean>>, width: number, weatherData: any }) {
+function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal, width, weatherData }: typeDailyInfoData) {
     if (weatherData["data"] === undefined) return null;
     return (
         <div>

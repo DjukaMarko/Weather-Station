@@ -5,13 +5,15 @@ import psycopg2
 # Function to create SQL insert statements from JSON data
 def json_to_sql(json_data):
     values = ', '.join(
-        "('{}', '{}')".format(
+        "('{}', '{}', '{}', '{}')".format(
             obj['name'].replace("'", "") if obj['name'] is not None else '',
-            obj['cou_name_en'].replace("'", "") if obj['cou_name_en'] is not None else ''
+            obj['cou_name_en'].replace("'", "") if obj['cou_name_en'] is not None else '',
+            obj['lon'],
+            obj['lat']
         )
         for obj in json_data
     )
-    return f"INSERT INTO cities (name, cou_name_en) VALUES {values};"
+    return f"INSERT INTO cities (name, cou_name_en, lon, lat) VALUES {values};"
 
 # Function to export SQL data to a file
 def export_to_sql(filename, data):
@@ -38,7 +40,7 @@ def import_to_postgres(filename):
 def main():
     json_file = ''
     chunk_size = 1000  # Adjust this according to your needs
-    output_dir = ''
+    output_dir = 'scripts/output'
 
     with open(json_file, 'r') as file:
         data = json.load(file)

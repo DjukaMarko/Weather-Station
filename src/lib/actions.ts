@@ -84,3 +84,14 @@ export async function register(
   }
   redirect("/login");
 }
+
+
+export async function querySearchAutoCompletion(query: string) {
+  try {
+    console.log(query);
+    const sqlQuery = await sql`SELECT name, cou_name_en, lon, lat FROM cities WHERE name ILIKE ${query + '%'} LIMIT 10;`;
+    return sqlQuery.rows;
+  } catch (error) {
+    throw error;
+  }
+}

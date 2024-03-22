@@ -5,9 +5,17 @@ import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
 
+interface searchCity { // This is an interface that is used to define the structure of the object which is used to fetch the city data
+  name: string;
+  cou_name_en: string
+  lat: number;
+  lon: number;
+}
+
 export default function Page() {
   const [isLoadingData, setLoadingData] = useState<boolean>(true);
   const [weatherData, setWeatherData] = useState<{ [index: string]: (string | number) }>({});
+  const [selectedCity, setSelectedCity] = useState<searchCity>({ name: "", cou_name_en: "", lat: 0, lon: 0 });
   const [isSearchClicked, setSearchClicked] = useState(true);
   const { width } = useWindowDimensions();
 
@@ -15,6 +23,27 @@ export default function Page() {
     console.log("API CALL!");
     handleLocationClick();
   }, []);
+
+  useEffect(() => {
+    setLoadingData(true);
+    if(selectedCity.name === "") return;
+    function fetchData() {
+      fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${selectedCity.lat}&lon=${selectedCity.lon}&exclude=minutely%2Chourly&appid=${process.env.OPENWEATHER_SECRET}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const normalizedCity = {
+            "_normalized_city": selectedCity.name,
+            "ISO_3166-1_alpha-2": selectedCity.cou_name_en
+          }
+  
+          setWeatherData(normalizedCity)
+          setWeatherData(prev => ({ ...prev, data }));
+          setLoadingData(false);
+        });
+    }
+
+    fetchData();
+  }, [selectedCity]);
 
 
   function convertKelvinToCel(kelvin: number): number {
@@ -58,8 +87,23 @@ export default function Page() {
 
   return (
     <div className="relative z-[-1] w-full h-full grid grid-cols-1 grid-rows-4 gap-2 xl:grid-cols-2 2xl:grid-cols-3 p-2">
-      <LandingWeather convertKelvinToCel={convertKelvinToCel} capitalizeWords={capitalizeWords} handleLocationClick={handleLocationClick} isLoading={isLoadingData} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />
-      <LandingDailyInfo convertKelvinToCel={convertKelvinToCel} capitalizeWords={capitalizeWords} weatherData={weatherData} isLoading={isLoadingData} width={width} />
+      <LandingWeather 
+        setSelectedCity={setSelectedCity} 
+        convertKelvinToCel={convertKelvinToCel} 
+        capitalizeWords={capitalizeWords} 
+        handleLocationClick={handleLocationClick} 
+        isLoading={isLoadingData} 
+        weatherData={weatherData} 
+        isSearchClicked={isSearchClicked} 
+        setSearchClicked={setSearchClicked} 
+        width={width} />
+
+      <LandingDailyInfo 
+        convertKelvinToCel={convertKelvinToCel} 
+        capitalizeWords={capitalizeWords} 
+        weatherData={weatherData} 
+        isLoading={isLoadingData} 
+        width={width} />
     </div>
   );
 }
