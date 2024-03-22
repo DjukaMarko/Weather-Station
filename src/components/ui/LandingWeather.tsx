@@ -45,7 +45,7 @@ export default function LandingWeather({
     isSearchClicked, 
     width, 
     setSearchClicked }: typeLandingWeather) {
-        
+
     const [isLocatorSet, setLocator] = useState(false); // This is a state that is used to determine if the locator button is clicked or not
     const [inputValue, setInputValue] = useState(''); // This is a state that is used to store the value of the input field
     const [searchAutoCompletion, setSearchAutoCompletion] = useState<QueryResultRow[]>([]); // This is a state that is used to store the search auto completion data
@@ -161,7 +161,7 @@ function WeatherWithData({
                         <motion.div initial={{ height:0 }} animate={{ height:"auto" }} exit={{ height:0 }} transition={{ duration: 0.1 }} layout className="w-full max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
                             {searchAutoCompletion.map((item, index) => (
                                 <motion.div onClick={() => setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
-                                    <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {item["lat"]}, {item["lon"]} </p>
+                                    <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
                                 </motion.div>
                             ))}             
                         </motion.div>
