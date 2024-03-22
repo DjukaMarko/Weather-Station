@@ -38,6 +38,7 @@ export default function Page() {
   
           setWeatherData(normalizedCity)
           setWeatherData(prev => ({ ...prev, data }));
+          setSearchClicked(false);
           setLoadingData(false);
         });
     }

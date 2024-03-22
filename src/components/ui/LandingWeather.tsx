@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
+import Modal from "./Modal";
 
 interface typeLandingWeatherWithData {
     setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>,
@@ -20,7 +21,8 @@ interface typeLandingWeatherWithData {
     setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>,
     width: number,
     isLocatorSet: boolean,
-    setLocator: React.Dispatch<React.SetStateAction<boolean>>
+    setLocator: React.Dispatch<React.SetStateAction<boolean>>,
+    setMobileSearchBarClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface typeLandingWeather {
@@ -35,35 +37,39 @@ interface typeLandingWeather {
     setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function LandingWeather({ 
-    setSelectedCity, 
-    convertKelvinToCel, 
-    capitalizeWords, 
-    handleLocationClick, 
-    isLoading, 
-    weatherData, 
-    isSearchClicked, 
-    width, 
+export default function LandingWeather({
+    setSelectedCity,
+    convertKelvinToCel,
+    capitalizeWords,
+    handleLocationClick,
+    isLoading,
+    weatherData,
+    isSearchClicked,
+    width,
     setSearchClicked }: typeLandingWeather) {
 
     const [isLocatorSet, setLocator] = useState(false); // This is a state that is used to determine if the locator button is clicked or not
     const [inputValue, setInputValue] = useState(''); // This is a state that is used to store the value of the input field
     const [searchAutoCompletion, setSearchAutoCompletion] = useState<QueryResultRow[]>([]); // This is a state that is used to store the search auto completion data
+    const [isMobileSearchBarClicked, setMobileSearchBarClicked] = useState(false); // This is a state that is used to determine if the search bar is clicked or not
 
     useEffect(() => {
         const fetchSearchAutoCompletion = async () => {
-            if(inputValue === '') return;
+            if (inputValue === '') return;
             const response = await querySearchAutoCompletion(inputValue);
             setSearchAutoCompletion(response);
         }
         fetchSearchAutoCompletion();
     }, [inputValue]);
 
-    
+
     return (
         <div className="relative w-full h-full overflow-hidden row-span-2">
+            <Modal isShown={isMobileSearchBarClicked && width < 640} setShown={setMobileSearchBarClicked}>
+                <p>hey</p>
+            </Modal>
             <div className="relative w-full h-full bg-zinc-800 rounded-2xl flex flex-col justify-end cursor-default p-6">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
             </div>
         </div>
     )
@@ -106,26 +112,27 @@ function SkeletonLoader() {
 }
 
 
-function WeatherWithData({ 
-    setSelectedCity, 
-    searchAutoCompletion, 
-    inputValue, 
-    setInputValue, 
-    capitalizeWords, 
-    convertKelvinToCel, 
-    isLocatorSet, 
-    setLocator, 
-    handleLocationClick, 
-    weatherData, 
-    isSearchClicked, 
-    setSearchClicked, 
+function WeatherWithData({
+    setMobileSearchBarClicked,
+    setSelectedCity,
+    searchAutoCompletion,
+    inputValue,
+    setInputValue,
+    capitalizeWords,
+    convertKelvinToCel,
+    isLocatorSet,
+    setLocator,
+    handleLocationClick,
+    weatherData,
+    isSearchClicked,
+    setSearchClicked,
     width }: typeLandingWeatherWithData) {
 
-    if(weatherData["data"] === undefined) return null;
-    
+    if (weatherData["data"] === undefined) return null;
+
     const handleLocator = () => {
         setLocator(true);
-        handleLocationClick();      
+        handleLocationClick();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,16 +145,20 @@ function WeatherWithData({
         setInputValue('');
     }
 
+    const handleSearchBarMobileClick = () => {
+        width < 640 ? setMobileSearchBarClicked(true) : setMobileSearchBarClicked(false);
+    }
+
     return (
         <>
-            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 pr-4 md:p-6">
+            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 pr-4 md:p-6 sm:max-w-[350px]">
                 <div className="flex flex-row-reverse items-center cursor-pointer">
                     <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2" onClick={handleSearchClick}>
                         {isSearchClicked ? <X color="#fff" size={22} /> : <Search color="#fff" size={22} />}
                     </motion.div>
 
                     <AnimatePresence>
-                        {isSearchClicked && <motion.input value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
+                        {isSearchClicked && <motion.input onClick={handleSearchBarMobileClick} value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: width > 640 ? "100%" : "60%" }}
                             exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
                     </AnimatePresence>
@@ -158,12 +169,12 @@ function WeatherWithData({
                 </div>
                 <AnimatePresence>
                     {width > 640 && isSearchClicked && inputValue !== '' && (
-                        <motion.div initial={{ height:0 }} animate={{ height:"auto" }} exit={{ height:0 }} transition={{ duration: 0.1 }} layout className="w-full max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
+                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} transition={{ duration: 0.1 }} layout className="w-full overflow-x-scroll max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
                             {searchAutoCompletion.map((item, index) => (
                                 <motion.div onClick={() => setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
                                     <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
                                 </motion.div>
-                            ))}             
+                            ))}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -176,7 +187,7 @@ function WeatherWithData({
                     <p className="text-2xl sm:text-2xl">°C</p>
                 </div>
                 <div className="flex space-x-2 items-center">
-                    <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 50 : 35} height={width > 640 ? 50: 35} alt="open1" />
+                    <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 50 : 35} height={width > 640 ? 50 : 35} alt="open1" />
                     <p className="text-[#fff] text-xs sm:text-lg">{capitalizeWords(weatherData["data"]["current"]["weather"][0]["description"])}</p>
                 </div>
             </div>
