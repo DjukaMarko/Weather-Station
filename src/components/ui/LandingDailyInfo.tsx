@@ -31,7 +31,7 @@ interface typeDailyInfoData {
 export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: typeLandingDailyInfo) {
     const [isShownModal, setShownModal] = useState(false);
     return (
-        <div className="relative w-full h-full min-h-[400px] sm:min-h-fit sm:row-start-3 sm:row-span-2">
+        <div className="relative w-full h-full min-h-[400px] sm:min-h-fit sm:col-start-1 sm:row-span-2">
             {weatherData["data"] !== undefined &&
                 <Modal isShown={isShownModal} setShown={setShownModal}>
                     <Table className="w-full h-full">

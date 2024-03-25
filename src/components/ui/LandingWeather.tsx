@@ -64,7 +64,7 @@ export default function LandingWeather({
 
 
     return (
-        <div className="relative w-full h-full min-h-[400px] sm:min-h-fit sm:row-span-2">
+        <div className="relative w-full h-full min-h-[400px] sm:min-h-fit sm:col-start-1 sm:row-span-2">
             <Modal isShown={isMobileSearchBarClicked && width < 640} setShown={setMobileSearchBarClicked}>
                 <p className="text-white">hey</p>
             </Modal>
