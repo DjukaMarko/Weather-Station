@@ -64,11 +64,11 @@ export default function LandingWeather({
 
 
     return (
-        <div className="relative w-full h-full overflow-hidden row-span-2">
+        <div className="relative w-full h-full min-h-[400px] sm:min-h-full sm:row-span-2">
             <Modal isShown={isMobileSearchBarClicked && width < 640} setShown={setMobileSearchBarClicked}>
-                <p>hey</p>
+                <p className="text-white">hey</p>
             </Modal>
-            <div className="relative w-full h-full bg-zinc-800 rounded-2xl flex flex-col justify-end cursor-default p-6">
+            <div className="relative w-full h-full bg-zinc-800 rounded-md flex flex-col justify-end cursor-default p-6">
                 {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
             </div>
         </div>
@@ -151,21 +151,17 @@ function WeatherWithData({
 
     return (
         <>
-            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 pr-4 md:p-6 sm:max-w-[350px]">
+            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 px-6 py-3 sm:p-6 w-[300px] sm:w-[350px]">
                 <div className="flex flex-row-reverse items-center cursor-pointer">
                     <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2" onClick={handleSearchClick}>
                         {isSearchClicked ? <X color="#fff" size={22} /> : <Search color="#fff" size={22} />}
                     </motion.div>
 
                     <AnimatePresence>
-                        {isSearchClicked && <motion.input onClick={handleSearchBarMobileClick} value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: width > 640 ? "100%" : "60%" }}
+                        {isSearchClicked && <motion.input readOnly={width < 640} onClick={handleSearchBarMobileClick} value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "100%" }}
                             exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
                     </AnimatePresence>
-
-                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2">
-                        <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={22} />
-                    </motion.div>
                 </div>
                 <AnimatePresence>
                     {width > 640 && isSearchClicked && inputValue !== '' && (
@@ -180,21 +176,25 @@ function WeatherWithData({
                 </AnimatePresence>
             </motion.div>
 
-            <div className="w-full flex flex-col space-y-3 pb-4">
-                <Image className="relative right-3" src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 80 : 60} height={width > 640 ? 80 : 60} alt="open2" />
+            <div className="w-full flex flex-col space-y-4 pb-4">
                 <div className="text-[#fff] flex">
                     <p className="text-5xl sm:text-6xl">{Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"]))}</p>
                     <p className="text-2xl sm:text-2xl">°C</p>
                 </div>
-                <div className="flex space-x-2 items-center">
-                    <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 50 : 35} height={width > 640 ? 50 : 35} alt="open1" />
+                <div className="flex space-x-2 space-x-4 items-center">
+                    <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 32 : 35} height={width > 640 ? 32 : 35} alt="open1" />
                     <p className="text-[#fff] text-xs sm:text-lg">{capitalizeWords(weatherData["data"]["current"]["weather"][0]["description"])}</p>
                 </div>
             </div>
             <div className="w-full flex flex-col space-y-2 pt-4 border-t-[1px] border-t-zinc-700">
-                <div className="flex space-x-2 items-center">
-                    <MapPin size={20} color="#fff" />
-                    <p className="text-[#fff] text-xs sm:text-base">{weatherData["_normalized_city"]}, {weatherData["ISO_3166-1_alpha-2"]}</p>
+                <div className="w-full flex justify-between items-center">
+                    <div className="flex space-x-2 items-center">
+                        <MapPin size={20} color="#fff" />
+                        <p className="text-[#fff] text-xs sm:text-base">{weatherData["_normalized_city"]}, {weatherData["ISO_3166-1_alpha-2"]}</p>
+                    </div>
+                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2">
+                        <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={20} />
+                    </motion.div>
                 </div>
                 <div className="flex space-x-2 items-center">
                     <CalendarDays color="#fff" size={20} />

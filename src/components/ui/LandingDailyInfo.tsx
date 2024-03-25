@@ -31,7 +31,7 @@ interface typeDailyInfoData {
 export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: typeLandingDailyInfo) {
     const [isShownModal, setShownModal] = useState(false);
     return (
-        <div className="relative w-full h-full col-start-1 row-start-3 row-span-2">
+        <div className="relative w-full h-full min-h-[400px] sm:min-h-full sm:row-start-3 sm:row-span-2">
             {weatherData["data"] !== undefined &&
                 <Modal isShown={isShownModal} setShown={setShownModal}>
                     <Table className="w-full h-full">
@@ -39,7 +39,7 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
                             {weatherData["data"]["daily"].map((el: any, index: number) => {
                                 return (
                                     <TableRow className="border-zinc-700 border-b-[1px] hover:bg-zinc-900" key={index}>
-                                        <TableCell className="md:px-10"><Image src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
+                                        <TableCell className="md:px-10"><Image className="my-2" src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 40 : 32} height={width > 640 ? 40 : 32} alt={`open${index}`} /></TableCell>
                                         <TableCell className="md:px-10">
                                             <div className="flex items-end">
                                                 <p className="text-sm sm:text-lg lg:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["max"]))}°/</p>
@@ -55,7 +55,7 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
                     </Table>
                 </Modal>
             }
-            <div className="w-full h-full bg-zinc-800 rounded-2xl cursor-pointer overflow-hidden relative">
+            <div className="w-full h-full bg-zinc-800 rounded-md cursor-pointer overflow-hidden relative">
                 {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <DailyInfoWithData capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} weatherData={weatherData} setShownModal={setShownModal} width={width} />}
             </div>
         </div>
@@ -114,8 +114,8 @@ function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal,
         <div>
             <motion.div layout onClick={() => setShownModal(true)} className="absolute z-[1] hover:to-black/80 w-full h-full bg-gradient-to-b from-transparent to-black/70"></motion.div>
             <div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale:1.04 }} className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-4 p-4">
-                    <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 100 : 70} height={width > 640 ? 100 : 70} alt="open3" />
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale:1.04 }} className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-6 p-4">
+                    <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 48 : 40} height={width > 640 ? 48 : 40} alt="open3" />
                     <div className="flex flex-col">
                         <p className="text-white text-xs md:text-sm">Tomorrow</p>
                         <p className="text-white text-md md:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][1]["temp"]["day"]))}°</p>
@@ -128,7 +128,7 @@ function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal,
                             {weatherData["data"]["daily"].map((el: any, index: number) => {
                                 return (
                                     <TableRow className="border-zinc-700 border-b-[1px]" key={index}>
-                                        <TableCell><Image src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 60 : 50} height={width > 640 ? 60 : 50} alt={`open${index}`} /></TableCell>
+                                        <TableCell><Image className="my-2" src={`/animated/${weatherData["data"]["daily"][index]["weather"][0]["icon"]}.svg`} width={width > 640 ? 40 : 32} height={width > 640 ? 40 : 32} alt={`open${index}`} /></TableCell>
                                         <TableCell>
                                             <div className="flex items-end">
                                                 <p className="text-sm sm:text-lg lg:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["max"]))}°/</p>

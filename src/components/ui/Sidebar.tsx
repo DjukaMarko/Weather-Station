@@ -17,7 +17,7 @@ export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes
             initial={{ width: "17rem" }}
             animate={{ width: isHovered ? "15rem" : "6rem" }}
             transition={{ duration: 0.3 }}
-            className={` sticky top-0 left-0 bottom-0 h-screen flex flex-col bg-zinc-800 z-[1]`}>
+            className={`sticky h-full flex flex-col bg-zinc-800 z-[1]`}>
             <div onClick={handleHover} className="absolute cursor-pointer w-full h-full z-[-1]">
                 <div className={`${isHovered && "rotate-180"} w-10 h-10 bg-zinc-700 hover:bg-zinc-600 p-1 rounded-lg flex justify-center items-center absolute top-0 bottom-0 my-auto right-2 cursor-pointer`}>
                     <ArrowRightFromLine size={18} color="#fff" />
