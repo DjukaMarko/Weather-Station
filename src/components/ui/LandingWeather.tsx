@@ -7,35 +7,28 @@ import { useEffect, useState } from "react"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Modal from "./Modal";
+import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
 
-interface typeLandingWeatherWithData {
-    setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>,
-    searchAutoCompletion: QueryResultRow[],
-    inputValue: string,
-    setInputValue: React.Dispatch<React.SetStateAction<string>>,
-    capitalizeWords: (input: string) => string,
-    convertKelvinToCel: (kelvin: number) => number,
-    handleLocationClick: () => void,
-    weatherData: any,
-    isSearchClicked: boolean,
-    setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>,
-    width: number,
-    isLocatorSet: boolean,
-    setLocator: React.Dispatch<React.SetStateAction<boolean>>,
-    setMobileSearchBarClicked: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-interface typeLandingWeather {
-    setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>,
-    capitalizeWords: (input: string) => string,
-    convertKelvinToCel: (kelvin: number) => number,
-    handleLocationClick: () => void,
-    isLoading: boolean,
-    weatherData: any,
-    isSearchClicked: boolean,
-    width: number,
-    setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>
-}
+/**
+ * LandingWeather component displays the weather information on the landing page.
+ * It includes a search bar, weather data, and a modal for mobile view.
+ *
+ * @component
+ * @example
+ * return (
+ *   <LandingWeather
+ *     setSelectedCity={setSelectedCity}
+ *     convertKelvinToCel={convertKelvinToCel}
+ *     capitalizeWords={capitalizeWords}
+ *     handleLocationClick={handleLocationClick}
+ *     isLoading={isLoading}
+ *     weatherData={weatherData}
+ *     isSearchClicked={isSearchClicked}
+ *     width={width}
+ *     setSearchClicked={setSearchClicked}
+ *   />
+ * )
+ */
 
 export default function LandingWeather({
     setSelectedCity,
@@ -48,10 +41,25 @@ export default function LandingWeather({
     width,
     setSearchClicked }: typeLandingWeather) {
 
-    const [isLocatorSet, setLocator] = useState(false); // This is a state that is used to determine if the locator button is clicked or not
-    const [inputValue, setInputValue] = useState(''); // This is a state that is used to store the value of the input field
-    const [searchAutoCompletion, setSearchAutoCompletion] = useState<QueryResultRow[]>([]); // This is a state that is used to store the search auto completion data
-    const [isMobileSearchBarClicked, setMobileSearchBarClicked] = useState(false); // This is a state that is used to determine if the search bar is clicked or not
+    /**
+     * isLocatorSet state is used to determine if the locator button is clicked or not.
+     */
+    const [isLocatorSet, setLocator] = useState(false);
+
+    /**
+     * inputValue state is used to store the value of the input field.
+     */
+    const [inputValue, setInputValue] = useState('');
+
+    /**
+     * searchAutoCompletion state is used to store the search auto completion data.
+     */
+    const [searchAutoCompletion, setSearchAutoCompletion] = useState<QueryResultRow[]>([]);
+
+    /**
+     * isMobileSearchBarClicked state is used to determine if the search bar is clicked or not.
+     */
+    const [isMobileSearchBarClicked, setMobileSearchBarClicked] = useState(false);
 
     useEffect(() => {
         const fetchSearchAutoCompletion = async () => {
@@ -61,7 +69,6 @@ export default function LandingWeather({
         }
         fetchSearchAutoCompletion();
     }, [inputValue]);
-
 
     return (
         <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
@@ -75,11 +82,23 @@ export default function LandingWeather({
     )
 }
 
+/**
+ * convertTimestampToDate function converts a timestamp to a date string.
+ *
+ * @param {number} timestamp - The timestamp to convert.
+ * @returns {string} The formatted date string.
+ */
 function convertTimestampToDate(timestamp: number) {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("en-GB");
 }
 
+/**
+ * convertTimestampToTimeAMPM function converts a timestamp to a time string in AM/PM format.
+ *
+ * @param {number} timestamp - The timestamp to convert.
+ * @returns {string} The formatted time string.
+ */
 function convertTimestampToTimeAMPM(timestamp: number): string {
     const date = new Date(timestamp * 1000);
     let hours = date.getHours();
@@ -93,7 +112,12 @@ function convertTimestampToTimeAMPM(timestamp: number): string {
     return timeString;
 }
 
-
+/**
+ * SkeletonLoader component displays a skeleton loader while the weather data is loading.
+ *
+ * @component
+ * @returns {JSX.Element} The skeleton loader component.
+ */
 function SkeletonLoader() {
     return (
         <div className="relative w-full h-full flex flex-col justify-end">
@@ -111,7 +135,12 @@ function SkeletonLoader() {
     )
 }
 
-
+/**
+ * WeatherWithData component displays the weather data with search bar and location information.
+ *
+ * @component
+ * @returns {JSX.Element} The weather data component.
+ */
 function WeatherWithData({
     setMobileSearchBarClicked,
     setSelectedCity,

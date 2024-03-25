@@ -1,22 +1,39 @@
+/**
+ * Represents the main page component of the dashboard.
+ * This component displays weather information and daily info.
+ */
 "use client"
 
 import { useEffect, useState } from "react";
 import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
-
-interface searchCity { // This is an interface that is used to define the structure of the object which is used to fetch the city data
-  name: string;
-  cou_name_en: string
-  lat: number;
-  lon: number;
-}
+import { searchCity } from "@/lib/definitions";
 
 export default function Page() {
+  /**
+   * Represents the loading state of the weather data.
+   */
   const [isLoadingData, setLoadingData] = useState<boolean>(true);
+
+  /**
+   * Represents the weather data.
+   */
   const [weatherData, setWeatherData] = useState<{ [index: string]: (string | number) }>({});
+
+  /**
+   * Represents the selected city for weather information.
+   */
   const [selectedCity, setSelectedCity] = useState<searchCity>({ name: "", cou_name_en: "", lat: 0, lon: 0 });
+
+  /**
+   * Represents the state of the search button click.
+   */
   const [isSearchClicked, setSearchClicked] = useState(true);
+
+  /**
+   * Represents the width of the window.
+   */
   const { width } = useWindowDimensions();
 
   useEffect(() => {
@@ -46,15 +63,28 @@ export default function Page() {
   }, [selectedCity]);
 
 
+  /**
+   * Converts temperature from Kelvin to Celsius.
+   * @param kelvin - The temperature in Kelvin.
+   * @returns The temperature in Celsius.
+   */
   function convertKelvinToCel(kelvin: number): number {
     return kelvin - 273.15;
   }
 
+  /**
+   * Capitalizes the first letter of each word in a string.
+   * @param input - The input string.
+   * @returns The capitalized string.
+   */
   function capitalizeWords(input: string): string {
     return input.replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
-
+  /**
+   * Handles the click event for the location button.
+   * Fetches weather data based on the user's current location.
+   */
   function handleLocationClick() {
     setLoadingData(true);
     if (navigator.geolocation) {

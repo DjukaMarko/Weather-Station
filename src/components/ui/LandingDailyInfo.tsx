@@ -11,22 +11,19 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { typeDailyInfoData, typeLandingDailyInfo } from "@/lib/definitions";
 
-interface typeLandingDailyInfo {
-    capitalizeWords: (input: string) => string,
-    convertKelvinToCel: (kelvin: number) => number,
-    isLoading: boolean,
-    width: number,
-    weatherData: any
-}
 
-interface typeDailyInfoData {
-    capitalizeWords: (input: string) => string,
-    convertKelvinToCel: (kelvin: number) => number,
-    setShownModal: React.Dispatch<React.SetStateAction<boolean>>,
-    width: number,
-    weatherData: any
-}
+/**
+ * Renders the LandingDailyInfo component.
+ * 
+ * @param capitalizeWords - A function to capitalize words.
+ * @param convertKelvinToCel - A function to convert temperature from Kelvin to Celsius.
+ * @param isLoading - A boolean indicating whether the data is loading.
+ * @param width - The width of the component.
+ * @param weatherData - The weather data to be displayed.
+ * @returns The rendered LandingDailyInfo component.
+ */
 
 export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: typeLandingDailyInfo) {
     const [isShownModal, setShownModal] = useState(false);
@@ -61,7 +58,11 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
         </div>
     )
 }
-
+/**
+ * Renders the skeleton loader component.
+ * 
+ * @returns The rendered SkeletonLoader component.
+ */
 
 function SkeletonLoader() {
     return (
@@ -93,6 +94,12 @@ function SkeletonLoader() {
     )
 }
 
+/**
+ * Converts a timestamp to date.
+ * 
+ * @param timestamp - The timestamp to be converted.
+ * @returns An object containing the month and day of the converted timestamp.
+ */
 function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWeek: string } {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -107,6 +114,17 @@ function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWee
         dayOfWeek: dayOfWeek
     };
 }
+
+/**
+ * Renders the DailyInfoWithData component.
+ * 
+ * @param capitalizeWords - A function to capitalize words.
+ * @param convertKelvinToCel - A function to convert temperature from Kelvin to Celsius.
+ * @param setShownModal - A function to set the visibility of the modal.
+ * @param width - The width of the component.
+ * @param weatherData - The weather data to be displayed.
+ * @returns The rendered DailyInfoWithData component.
+ */
 
 function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal, width, weatherData }: typeDailyInfoData) {
     if (weatherData["data"] === undefined) return null;
