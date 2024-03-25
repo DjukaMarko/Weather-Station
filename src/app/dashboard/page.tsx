@@ -86,7 +86,7 @@ export default function Page() {
   }
 
   return (
-    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 sm:space-y-0 sm:grid sm:grid-cols-1 sm:grid-rows-4 sm:gap-1 xl:grid-cols-2 p-1">
+    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 sm:space-y-0 sm:grid sm:grid-cols-1 sm:grid-rows-4 sm:gap-1 xl:grid-cols-2 p-1 overflow-y-scroll">
       <LandingWeather
         setSelectedCity={setSelectedCity}
         convertKelvinToCel={convertKelvinToCel}
