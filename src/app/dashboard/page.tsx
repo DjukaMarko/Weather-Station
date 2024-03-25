@@ -86,7 +86,7 @@ export default function Page() {
   }
 
   return (
-    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 sm:space-y-0 sm:grid sm:grid-cols-1 sm:grid-rows-4 sm:gap-1 xl:grid-cols-2 p-1 overflow-y-scroll">
+    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-4 xl:gap-1 p-1 overflow-y-scroll">
       <LandingWeather
         setSelectedCity={setSelectedCity}
         convertKelvinToCel={convertKelvinToCel}
@@ -104,6 +104,17 @@ export default function Page() {
         weatherData={weatherData}
         isLoading={isLoadingData}
         width={width} />
+
+        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
+          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
+            <p className="text-white text-2xl">TBD</p>
+          </div>
+        </div>
+        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-2">
+          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
+            <p className="text-white text-2xl">TBD</p>
+          </div>
+        </div>
     </div>
   );
 }
