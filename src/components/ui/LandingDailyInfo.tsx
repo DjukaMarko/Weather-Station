@@ -12,6 +12,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { typeDailyInfoData, typeLandingDailyInfo } from "@/lib/definitions";
+
+// @ts-ignore
 import Trend from 'react-trend';
 
 
