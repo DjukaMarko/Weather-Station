@@ -12,6 +12,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { typeDailyInfoData, typeLandingDailyInfo } from "@/lib/definitions";
+import Trend from 'react-trend';
 
 
 /**
@@ -67,7 +68,7 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
 function SkeletonLoader() {
     return (
         <>
-            <div className="absolute z-[1] w-full h-full bg-gradient-to-b from-transparent to-black/70"></div>
+            <div className="absolute z-[1] w-full h-full bg-gradient-to-b from-transparent to-black/50"></div>
             <div className="w-full h-full p-6 divide-y divide-zinc-700">
                 <SkeletonTheme borderRadius={12} baseColor="#3f3f46" highlightColor="#52525b">
                     <div className="py-2">
@@ -130,15 +131,26 @@ function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal,
     if (weatherData["data"] === undefined) return null;
     return (
         <div>
-            <motion.div layout onClick={() => setShownModal(true)} className="absolute z-[1] hover:to-black/80 w-full h-full bg-gradient-to-b from-transparent to-black/70"></motion.div>
+            <motion.div layout onClick={() => setShownModal(true)} className="absolute z-[1] hover:to-black/80 w-full h-full bg-gradient-to-b from-transparent to-black/50"></motion.div>
             <div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale:1.04 }} className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center space-x-6 p-4">
-                    <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 48 : 40} height={width > 640 ? 48 : 40} alt="open3" />
-                    <div className="flex flex-col">
-                        <p className="text-white text-xs md:text-sm">Tomorrow</p>
-                        <p className="text-white text-md md:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][1]["temp"]["day"]))}°</p>
-                        <p className="text-white text-xs md:text-xs">{capitalizeWords(weatherData["data"]["daily"][1]["weather"][0]["description"])}</p>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 1.04 }} className="absolute w-[90%] h-20 md:h-24 rounded-xl bottom-4 left-0 right-0 m-auto bg-zinc-800 z-[2] flex items-center justify-between px-6">
+                    <div className="h-full flex space-x-6 items-center">
+                        <Image src={`/animated/${weatherData["data"]["daily"][1]["weather"][0]["icon"]}.svg`} width={width > 640 ? 48 : 40} height={width > 640 ? 48 : 40} alt="open3" />
+                        <div className="flex flex-col">
+                            <p className="text-white text-xs md:text-sm">Tomorrow</p>
+                            <p className="text-white text-md md:text-2xl">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][1]["temp"]["day"]))}°</p>
+                            <p className="text-white text-xs md:text-xs">{capitalizeWords(weatherData["data"]["daily"][1]["weather"][0]["description"])}</p>
+                        </div>
                     </div>
+                    <Trend
+                        className="w-28 sm:w-32 md:w-48 2xl:w-64 h-full"
+                        data={weatherData["data"]["hourly"].map((el: any) => Math.round(convertKelvinToCel(el["temp"])))}
+                        smooth
+                        radius={10}
+                        gradient={Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"])) < 15 ? ['#30a0fc','#5315bf'] : ['yellow', 'orange', 'red']}
+                        strokeLinecap={'round'}
+                        strokeWidth={2}
+                    />
                 </motion.div>
                 <div className="px-6 py-2">
                     <Table>

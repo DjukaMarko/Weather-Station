@@ -9,6 +9,7 @@ import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
 import { searchCity } from "@/lib/definitions";
+import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
 
 export default function Page() {
   /**
@@ -44,7 +45,7 @@ export default function Page() {
     setLoadingData(true);
     if (selectedCity.name === "") return;
     function fetchData() {
-      fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${selectedCity.lat}&lon=${selectedCity.lon}&exclude=minutely%2Chourly&appid=${process.env.OPENWEATHER_SECRET}`)
+      fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${selectedCity.lat}&lon=${selectedCity.lon}&exclude=minutely&appid=${process.env.OPENWEATHER_SECRET}`)
         .then((response) => response.json())
         .then((data) => {
           const normalizedCity = {
@@ -93,7 +94,7 @@ export default function Page() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely%2Chourly&appid=${process.env.OPENWEATHER_SECRET}`);
+        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=${process.env.OPENWEATHER_SECRET}`);
         const data = await response.json();
 
         const responseTown = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&key=${process.env.OPENCAGE_API_KEY}`);
@@ -115,8 +116,10 @@ export default function Page() {
     }
   }
 
+  console.log(weatherData);
+
   return (
-    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-4 xl:gap-1 p-1 overflow-y-scroll">
+    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll">
       <LandingWeather
         setSelectedCity={setSelectedCity}
         convertKelvinToCel={convertKelvinToCel}
@@ -128,6 +131,13 @@ export default function Page() {
         setSearchClicked={setSearchClicked}
         width={width} />
 
+      <HourlyWeatherInfo 
+        isLoading={isLoadingData}
+        weatherData={weatherData}
+        convertKelvinToCel={convertKelvinToCel}
+        width={width}
+      />
+
       <LandingDailyInfo
         convertKelvinToCel={convertKelvinToCel}
         capitalizeWords={capitalizeWords}
@@ -135,16 +145,16 @@ export default function Page() {
         isLoading={isLoadingData}
         width={width} />
 
-        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
-          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
-            <p className="text-white text-2xl">TBD</p>
-          </div>
+      <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
+        <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
+          <p className="text-white text-2xl">TBD</p>
         </div>
-        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-2">
-          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
-            <p className="text-white text-2xl">TBD</p>
-          </div>
+      </div>
+      <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-3">
+        <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
+          <p className="text-white text-2xl">TBD</p>
         </div>
+      </div>
     </div>
   );
 }

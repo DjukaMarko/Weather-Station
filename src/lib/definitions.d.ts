@@ -81,6 +81,7 @@ interface typeLandingWeatherWithData {
     isLocatorSet: boolean;
     setLocator: React.Dispatch<React.SetStateAction<boolean>>;
     setMobileSearchBarClicked: React.Dispatch<React.SetStateAction<boolean>>;
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**

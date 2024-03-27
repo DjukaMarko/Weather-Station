@@ -70,13 +70,32 @@ export default function LandingWeather({
         fetchSearchAutoCompletion();
     }, [inputValue]);
 
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInputValue(value);
+    }
+
     return (
         <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
             <Modal isShown={isMobileSearchBarClicked && width < 640} setShown={setMobileSearchBarClicked}>
-                <p className="text-white">hey</p>
+                <div className="w-full h-full flex flex-col space-y-2">
+                    <input onChange={handleInputChange} value={inputValue} placeholder="e.g. New York"
+                        className="bg-zinc-700 w-full mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />
+                    <motion.div layout className="w-full overflow-x-scroll scrollbar-hide h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
+                        {searchAutoCompletion.map((item, index) => (
+                            <motion.div onClick={() => { 
+                                setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number }) 
+                                setMobileSearchBarClicked(false);
+                                }} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                                <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
             </Modal>
             <div className="relative w-full h-full bg-zinc-800 rounded-md flex flex-col justify-end cursor-default p-6">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData handleInputChange={handleInputChange} setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
             </div>
         </div>
     )
@@ -94,20 +113,17 @@ function convertTimestampToDate(timestamp: number) {
 }
 
 /**
- * convertTimestampToTimeAMPM function converts a timestamp to a time string in AM/PM format.
+ * convertTimestampToTime function converts a timestamp to a time string in AM/PM format.
  *
  * @param {number} timestamp - The timestamp to convert.
  * @returns {string} The formatted time string.
  */
-function convertTimestampToTimeAMPM(timestamp: number): string {
+function convertTimestampToTime(timestamp: number): string {
     const date = new Date(timestamp * 1000);
     let hours = date.getHours();
     const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Handle midnight (0 hours)
 
-    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ' ' + ampm;
+    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 
     return timeString;
 }
@@ -155,6 +171,7 @@ function WeatherWithData({
     weatherData,
     isSearchClicked,
     setSearchClicked,
+    handleInputChange,
     width }: typeLandingWeatherWithData) {
 
     if (weatherData["data"] === undefined) return null;
@@ -164,18 +181,9 @@ function WeatherWithData({
         handleLocationClick();
     }
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInputValue(value);
-    }
-
     const handleSearchClick = () => {
         setSearchClicked(prevVal => !prevVal)
         setInputValue('');
-    }
-
-    const handleSearchBarMobileClick = () => {
-        width < 640 ? setMobileSearchBarClicked(true) : setMobileSearchBarClicked(false);
     }
 
     return (
@@ -187,7 +195,7 @@ function WeatherWithData({
                     </motion.div>
 
                     <AnimatePresence>
-                        {isSearchClicked && <motion.input readOnly={width < 640} onClick={handleSearchBarMobileClick} value={inputValue} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
+                        {isSearchClicked && <motion.input readOnly={width < 640} onClick={() => {  width < 640 ? setMobileSearchBarClicked(true) : setMobileSearchBarClicked(false); }} value={width > 640 ? inputValue : ""} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
                             exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
                     </AnimatePresence>
@@ -221,14 +229,17 @@ function WeatherWithData({
                         <MapPin size={20} color="#fff" />
                         <p className="text-[#fff] text-xs sm:text-base">{weatherData["_normalized_city"]}, {weatherData["ISO_3166-1_alpha-2"]}</p>
                     </div>
-                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2">
+                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }}>
                         <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={20} />
                     </motion.div>
                 </div>
-                <div className="flex space-x-2 items-center">
-                    <CalendarDays color="#fff" size={20} />
-                    <p className="text-[#fff] text-xs sm:text-base">{convertTimestampToDate(weatherData["data"]["current"]["dt"])}</p>
-                    <p className="text-[#fff] text-xs sm:text-base font-bold">{convertTimestampToTimeAMPM(weatherData["data"]["current"]["dt"])}</p>
+                <div className="w-full flex justify-between items-center">
+                    <div className="flex space-x-2 items-center">
+                        <CalendarDays color="#fff" size={20} />
+                        <p className="text-[#fff] text-xs sm:text-base">{convertTimestampToDate(weatherData["data"]["current"]["dt"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
+                        <p className="text-[#fff] text-xs sm:text-base font-bold">{convertTimestampToTime(weatherData["data"]["current"]["dt"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
+                    </div>
+                    <p className="hidden 2xl:block text-white text-sm underline cursor-pointer">Timestamps are based on the GMT+0 time zone.</p>
                 </div>
             </div>
         </>
