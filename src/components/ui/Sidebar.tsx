@@ -8,7 +8,7 @@ import { MobilePropTypes } from "@/lib/definitions";
 
 
 export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes) {
-    const [isHovered, setIsHovered] = useState(true);
+    const [isHovered, setIsHovered] = useState(false);
     const handleHover = () => {
         setIsHovered(!isHovered);
     };
