@@ -77,7 +77,7 @@ export default function LandingWeather({
     }
 
     return (
-        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
+        <div className="relative w-full h-full min-h-[320px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
             <Modal isShown={isMobileSearchBarClicked && width < 640} setShown={setMobileSearchBarClicked}>
                 <div className="w-full h-full flex flex-col space-y-2">
                     <input onChange={handleInputChange} value={inputValue} placeholder="e.g. New York"
