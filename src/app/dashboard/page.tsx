@@ -12,7 +12,7 @@ import { WeatherContextType, searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
 import DisplayLocation from "@/components/ui/DisplayLocation";
 
-export const WeatherContext = createContext<WeatherContextType>({ width: 0, isLoadingData: true, weatherData: {}, convertKelvinToCel: () => 0 });
+export const WeatherContext = createContext<any>(null);
 type WeatherData = Record<string, any>;
 
 export default function Page() {
