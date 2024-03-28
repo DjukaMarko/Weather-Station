@@ -4,15 +4,15 @@
  */
 "use client"
 
-import { createContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
-import { WeatherContextType, searchCity } from "@/lib/definitions";
+import { searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
 import DisplayLocation from "@/components/ui/DisplayLocation";
+import { WeatherContext } from "@/components/misc/WeatherContext";
 
-export const WeatherContext = createContext<any>(null);
 type WeatherData = Record<string, any>;
 
 export default function Page() {

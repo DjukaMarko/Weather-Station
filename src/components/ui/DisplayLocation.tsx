@@ -1,6 +1,6 @@
-import { WeatherContext } from "@/app/dashboard/page";
 import dynamic from "next/dynamic";
 import { useContext, useMemo } from "react";
+import { WeatherContext } from "../misc/WeatherContext";
 
 export default function DisplayLocation() {
     const { isLoadingData, weatherData } = useContext(WeatherContext);

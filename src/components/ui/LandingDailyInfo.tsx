@@ -15,7 +15,7 @@ import { typeDailyInfoData, typeLandingDailyInfo } from "@/lib/definitions";
 
 // @ts-ignore
 import Trend from 'react-trend';
-import { WeatherContext } from "@/app/dashboard/page";
+import { WeatherContext } from "../misc/WeatherContext";
 
 
 /**

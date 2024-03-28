@@ -1,8 +1,8 @@
-import { WeatherContext } from "@/app/dashboard/page";
 import Image from "next/image";
 import { useContext, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDraggable } from "react-use-draggable-scroll";
+import { WeatherContext } from "../misc/WeatherContext";
 
 export default function HourlyWeatherInfo() {
     const { isLoadingData, weatherData } = useContext(WeatherContext);

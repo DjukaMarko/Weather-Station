@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Modal from "./Modal";
 import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
-import { WeatherContext } from "@/app/dashboard/page";
+import { WeatherContext } from "../misc/WeatherContext";
 
 /**
  * LandingWeather component displays the weather information on the landing page.
