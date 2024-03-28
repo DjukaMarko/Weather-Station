@@ -4,12 +4,17 @@
  */
 "use client"
 
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
-import { searchCity } from "@/lib/definitions";
+import { WeatherContextType, searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
+import dynamic from "next/dynamic";
+import DisplayLocation from "@/components/ui/DisplayLocation";
+
+export const WeatherContext = createContext({} as WeatherContextType);
+type WeatherData = Record<string, any>;
 
 export default function Page() {
   /**
@@ -20,7 +25,7 @@ export default function Page() {
   /**
    * Represents the weather data.
    */
-  const [weatherData, setWeatherData] = useState<{ [index: string]: (string | number) }>({});
+  const [weatherData, setWeatherData] = useState<WeatherData>({});
 
   /**
    * Represents the selected city for weather information.
@@ -116,45 +121,36 @@ export default function Page() {
     }
   }
 
-  console.log(weatherData);
-
   return (
     <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll">
-      <LandingWeather
-        setSelectedCity={setSelectedCity}
-        convertKelvinToCel={convertKelvinToCel}
-        capitalizeWords={capitalizeWords}
-        handleLocationClick={handleLocationClick}
-        isLoading={isLoadingData}
-        weatherData={weatherData}
-        isSearchClicked={isSearchClicked}
-        setSearchClicked={setSearchClicked}
-        width={width} />
+      <WeatherContext.Provider
+        value={{
+          isLoadingData,
+          weatherData,
+          convertKelvinToCel,
+          width,
+        }}
+      >
+        <LandingWeather
+          setSelectedCity={setSelectedCity}
+          capitalizeWords={capitalizeWords}
+          handleLocationClick={handleLocationClick}
+          isSearchClicked={isSearchClicked}
+          setSearchClicked={setSearchClicked} />
 
-      <HourlyWeatherInfo 
-        isLoading={isLoadingData}
-        weatherData={weatherData}
-        convertKelvinToCel={convertKelvinToCel}
-        width={width}
-      />
+        <HourlyWeatherInfo />
 
-      <LandingDailyInfo
-        convertKelvinToCel={convertKelvinToCel}
-        capitalizeWords={capitalizeWords}
-        weatherData={weatherData}
-        isLoading={isLoadingData}
-        width={width} />
+        <LandingDailyInfo capitalizeWords={capitalizeWords} />
 
-      <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
-        <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
-          <p className="text-white text-2xl">TBD</p>
+        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
+          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
+            <p className="text-white text-2xl">TBD</p>
+          </div>
         </div>
-      </div>
-      <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-3">
-        <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
-          <p className="text-white text-2xl">TBD</p>
-        </div>
-      </div>
+
+        <DisplayLocation />
+
+      </WeatherContext.Provider>
     </div>
   );
 }

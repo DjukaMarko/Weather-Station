@@ -3,11 +3,12 @@ import { QueryResultRow } from "@vercel/postgres";
 import { AnimatePresence, motion } from "framer-motion"
 import { CalendarDays, MapPin, Navigation, Search, X } from "lucide-react"
 import Image from "next/image";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Modal from "./Modal";
 import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
+import { WeatherContext } from "@/app/dashboard/page";
 
 /**
  * LandingWeather component displays the weather information on the landing page.
@@ -18,13 +19,9 @@ import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definition
  * return (
  *   <LandingWeather
  *     setSelectedCity={setSelectedCity}
- *     convertKelvinToCel={convertKelvinToCel}
  *     capitalizeWords={capitalizeWords}
  *     handleLocationClick={handleLocationClick}
- *     isLoading={isLoading}
- *     weatherData={weatherData}
  *     isSearchClicked={isSearchClicked}
- *     width={width}
  *     setSearchClicked={setSearchClicked}
  *   />
  * )
@@ -32,14 +29,12 @@ import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definition
 
 export default function LandingWeather({
     setSelectedCity,
-    convertKelvinToCel,
     capitalizeWords,
     handleLocationClick,
-    isLoading,
-    weatherData,
     isSearchClicked,
-    width,
     setSearchClicked }: typeLandingWeather) {
+
+    const { width, isLoadingData, weatherData } = useContext(WeatherContext);
 
     /**
      * isLocatorSet state is used to determine if the locator button is clicked or not.
@@ -95,7 +90,7 @@ export default function LandingWeather({
                 </div>
             </Modal>
             <div className="relative w-full h-full bg-zinc-800 rounded-md flex flex-col justify-end cursor-default p-6">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData handleInputChange={handleInputChange} setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} weatherData={weatherData} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} width={width} />}
+                {(isLoadingData || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <WeatherWithData handleInputChange={handleInputChange} setMobileSearchBarClicked={setMobileSearchBarClicked} setSelectedCity={setSelectedCity} searchAutoCompletion={searchAutoCompletion} inputValue={inputValue} setInputValue={setInputValue} capitalizeWords={capitalizeWords} isLocatorSet={isLocatorSet} setLocator={setLocator} handleLocationClick={handleLocationClick} isSearchClicked={isSearchClicked} setSearchClicked={setSearchClicked} />}
             </div>
         </div>
     )
@@ -164,16 +159,15 @@ function WeatherWithData({
     inputValue,
     setInputValue,
     capitalizeWords,
-    convertKelvinToCel,
     isLocatorSet,
     setLocator,
     handleLocationClick,
-    weatherData,
     isSearchClicked,
     setSearchClicked,
-    handleInputChange,
-    width }: typeLandingWeatherWithData) {
+    handleInputChange
+    }: typeLandingWeatherWithData) {
 
+    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
 
     const handleLocator = () => {

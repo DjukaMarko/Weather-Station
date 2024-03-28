@@ -1,12 +1,14 @@
+import { WeatherContext } from "@/app/dashboard/page";
 import Image from "next/image";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDraggable } from "react-use-draggable-scroll";
 
-export default function HourlyWeatherInfo({ isLoading, weatherData, convertKelvinToCel, width }: { isLoading: boolean, weatherData: any, convertKelvinToCel: (kelvin: number) => number, width: number }) {
+export default function HourlyWeatherInfo() {
+    const { isLoadingData, weatherData } = useContext(WeatherContext);
     return (
         <div className="relative w-full h-full min-h-[150px] sm:min-h-[200px] xl:min-h-fit xl:col-start-1 xl:row-span-1">
-            {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <HourlyWeatherWithData weatherData={weatherData} convertKelvinToCel={convertKelvinToCel} width={width} /> }
+            {(isLoadingData || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <HourlyWeatherWithData /> }
         </div>
     )
 }
@@ -34,7 +36,8 @@ function SkeletonLoader() {
 }
 
 
-function HourlyWeatherWithData({ weatherData, convertKelvinToCel, width }: { weatherData: any, convertKelvinToCel: (kelvin: number) => number, width: number }) {
+function HourlyWeatherWithData() {
+    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
     const ref =
         useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
     const { events: events } = useDraggable(ref, {

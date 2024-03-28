@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/table"
 
 import Modal from "./Modal"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
@@ -15,6 +15,7 @@ import { typeDailyInfoData, typeLandingDailyInfo } from "@/lib/definitions";
 
 // @ts-ignore
 import Trend from 'react-trend';
+import { WeatherContext } from "@/app/dashboard/page";
 
 
 /**
@@ -28,7 +29,8 @@ import Trend from 'react-trend';
  * @returns The rendered LandingDailyInfo component.
  */
 
-export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, isLoading, width, weatherData }: typeLandingDailyInfo) {
+export default function LandingDailyInfo({ capitalizeWords }: typeLandingDailyInfo) {
+    const { width, isLoadingData, weatherData, convertKelvinToCel } = useContext(WeatherContext);
     const [isShownModal, setShownModal] = useState(false);
     return (
         <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
@@ -56,7 +58,7 @@ export default function LandingDailyInfo({ capitalizeWords, convertKelvinToCel, 
                 </Modal>
             }
             <div className="w-full h-full bg-zinc-800 rounded-md cursor-pointer overflow-hidden relative">
-                {(isLoading || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <DailyInfoWithData capitalizeWords={capitalizeWords} convertKelvinToCel={convertKelvinToCel} weatherData={weatherData} setShownModal={setShownModal} width={width} />}
+                {(isLoadingData || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <DailyInfoWithData capitalizeWords={capitalizeWords} setShownModal={setShownModal} />}
             </div>
         </div>
     )
@@ -129,7 +131,8 @@ function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWee
  * @returns The rendered DailyInfoWithData component.
  */
 
-function DailyInfoWithData({ capitalizeWords, convertKelvinToCel, setShownModal, width, weatherData }: typeDailyInfoData) {
+function DailyInfoWithData({ capitalizeWords, setShownModal }: typeDailyInfoData) {
+    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
     return (
         <div>

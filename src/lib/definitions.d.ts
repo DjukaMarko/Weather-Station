@@ -46,10 +46,6 @@ interface searchCity {
  */
 interface typeLandingDailyInfo {
     capitalizeWords: (input: string) => string;
-    convertKelvinToCel: (kelvin: number) => number;
-    isLoading: boolean;
-    width: number;
-    weatherData: any;
 }
 
 /**
@@ -57,10 +53,7 @@ interface typeLandingDailyInfo {
  */
 interface typeDailyInfoData {
     capitalizeWords: (input: string) => string;
-    convertKelvinToCel: (kelvin: number) => number;
     setShownModal: React.Dispatch<React.SetStateAction<boolean>>;
-    width: number;
-    weatherData: any;
 }
 
 /**
@@ -72,12 +65,9 @@ interface typeLandingWeatherWithData {
     inputValue: string;
     setInputValue: React.Dispatch<React.SetStateAction<string>>;
     capitalizeWords: (input: string) => string;
-    convertKelvinToCel: (kelvin: number) => number;
     handleLocationClick: () => void;
-    weatherData: any;
     isSearchClicked: boolean;
     setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
-    width: number;
     isLocatorSet: boolean;
     setLocator: React.Dispatch<React.SetStateAction<boolean>>;
     setMobileSearchBarClicked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -90,13 +80,16 @@ interface typeLandingWeatherWithData {
 interface typeLandingWeather {
     setSelectedCity: React.Dispatch<React.SetStateAction<{ name: string, cou_name_en: string, lat: number, lon: number }>>;
     capitalizeWords: (input: string) => string;
-    convertKelvinToCel: (kelvin: number) => number;
     handleLocationClick: () => void;
-    isLoading: boolean;
-    weatherData: any;
     isSearchClicked: boolean;
-    width: number;
     setSearchClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export { User, MobilePropTypes, MTypes, MOptionsTypes, searchCity, typeLandingDailyInfo, typeDailyInfoData, typeLandingWeatherWithData, typeLandingWeather};
+interface WeatherContextType {
+    width: number;
+    isLoadingData: boolean;
+    weatherData: any;
+    convertKelvinToCel: (temp: number) => number;
+  }
+
+export { User, MobilePropTypes, MTypes, MOptionsTypes, searchCity, typeLandingDailyInfo, typeDailyInfoData, typeLandingWeatherWithData, typeLandingWeather, WeatherContextType };
