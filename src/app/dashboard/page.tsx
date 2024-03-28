@@ -10,10 +10,9 @@ import LandingWeather from "@/components/ui/LandingWeather";
 import LandingDailyInfo from "@/components/ui/LandingDailyInfo";
 import { WeatherContextType, searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
-import dynamic from "next/dynamic";
 import DisplayLocation from "@/components/ui/DisplayLocation";
 
-export const WeatherContext = createContext({} as WeatherContextType);
+export const WeatherContext = createContext<WeatherContextType>({ width: 0, isLoadingData: true, weatherData: {}, convertKelvinToCel: () => 0 });
 type WeatherData = Record<string, any>;
 
 export default function Page() {
