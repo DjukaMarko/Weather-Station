@@ -12,6 +12,9 @@ import { searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
 import DisplayLocation from "@/components/ui/DisplayLocation";
 import { WeatherContext } from "@/components/misc/WeatherContext";
+import { Droplets, Sun, Sunset } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import AdditionalWeatherInfo from "@/components/ui/AdditionalWeatherInfo";
 
 type WeatherData = Record<string, any>;
 
@@ -120,6 +123,8 @@ export default function Page() {
     }
   }
 
+  console.log(weatherData);
+
   return (
     <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll">
       <WeatherContext.Provider
@@ -141,11 +146,7 @@ export default function Page() {
 
         <LandingDailyInfo capitalizeWords={capitalizeWords} />
 
-        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
-          <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
-            <p className="text-white text-2xl">TBD</p>
-          </div>
-        </div>
+        <AdditionalWeatherInfo />
 
         <DisplayLocation />
 

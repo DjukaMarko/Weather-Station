@@ -15,7 +15,7 @@ export default function DisplayLocation() {
     ), [])
 
     return (
-        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-3">
+        <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-3 xl:row-span-3 z-[1]">
             <div className="relative w-full h-full bg-zinc-800 rounded-md flex justify-center items-center">
             {(isLoadingData || Object.keys(weatherData).length <= 0) ? <SkeletonLoader/> : <Map position={[weatherData["data"]["lat"] as number, weatherData["data"]["lon"] as number]} />}
             </div>

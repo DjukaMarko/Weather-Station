@@ -1,7 +1,7 @@
 import { querySearchAutoCompletion } from "@/lib/actions";
 import { QueryResultRow } from "@vercel/postgres";
 import { AnimatePresence, motion } from "framer-motion"
-import { CalendarDays, MapPin, Navigation, Search, X } from "lucide-react"
+import { AlertTriangle, CalendarDays, MapPin, Navigation, Search, Wind, X } from "lucide-react"
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react"
 import Skeleton from 'react-loading-skeleton';
@@ -9,6 +9,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Modal from "./Modal";
 import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
 import { WeatherContext } from "../misc/WeatherContext";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 /**
  * LandingWeather component displays the weather information on the landing page.
@@ -79,10 +81,10 @@ export default function LandingWeather({
                         className="bg-zinc-700 w-full mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />
                     <motion.div layout className="w-full overflow-x-scroll scrollbar-hide h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
                         {searchAutoCompletion.map((item, index) => (
-                            <motion.div onClick={() => { 
-                                setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number }) 
+                            <motion.div onClick={() => {
+                                setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })
                                 setMobileSearchBarClicked(false);
-                                }} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
+                            }} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
                                 <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
                             </motion.div>
                         ))}
@@ -123,6 +125,15 @@ function convertTimestampToTime(timestamp: number): string {
     return timeString;
 }
 
+function timestampToTimeMonth(timestamp: number): string {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date(timestamp * 1000);
+    const monthName = months[date.getMonth()];
+    const year = date.getFullYear();
+    console.log(date.getFullYear(), date.getMonth())
+    return `${monthName} ${year}`;
+}
+
 /**
  * SkeletonLoader component displays a skeleton loader while the weather data is loading.
  *
@@ -146,6 +157,33 @@ function SkeletonLoader() {
     )
 }
 
+function getWindDirection(windDeg: number): string {
+    // Define directions and their corresponding degrees
+    const directions: { [key: string]: [number, number] } = {
+        'N': [0, 22.5],
+        'NE': [22.5, 67.5],
+        'E': [67.5, 112.5],
+        'SE': [112.5, 157.5],
+        'S': [157.5, 202.5],
+        'SW': [202.5, 247.5],
+        'W': [247.5, 292.5],
+        'NW': [292.5, 337.5],
+        'N2': [337.5, 360] //
+    };
+
+    // Loop through directions and check where the windDeg falls
+    for (const [direction, range] of Object.entries(directions)) {
+        const [min, max] = range;
+        if (windDeg >= min && windDeg < max) {
+            return direction;
+        }
+    }
+
+    // If windDeg is not covered by any range, return 'N'
+    return 'N';
+}
+
+
 /**
  * WeatherWithData component displays the weather data with search bar and location information.
  *
@@ -165,7 +203,7 @@ function WeatherWithData({
     isSearchClicked,
     setSearchClicked,
     handleInputChange
-    }: typeLandingWeatherWithData) {
+}: typeLandingWeatherWithData) {
 
     const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
@@ -189,7 +227,7 @@ function WeatherWithData({
                     </motion.div>
 
                     <AnimatePresence>
-                        {isSearchClicked && <motion.input readOnly={width < 640} onClick={() => {  width < 640 ? setMobileSearchBarClicked(true) : setMobileSearchBarClicked(false); }} value={width > 640 ? inputValue : ""} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
+                        {isSearchClicked && <motion.input readOnly={width < 640} onClick={() => { width < 640 ? setMobileSearchBarClicked(true) : setMobileSearchBarClicked(false); }} value={width > 640 ? inputValue : ""} onChange={handleInputChange} placeholder="e.g. New York" initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: "100%" }}
                             exit={{ opacity: 0, width: 0 }} transition={{ duration: 0.2 }} className="bg-zinc-700 mr-2 p-2 px-4 placeholder:text-[#fff] rounded-full hover:bg-zinc-600 text-[#fff] text-sm outline border-0 outline-0" />}
                     </AnimatePresence>
@@ -211,10 +249,42 @@ function WeatherWithData({
                 <div className="text-[#fff] flex">
                     <p className="text-5xl sm:text-6xl">{Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"]))}</p>
                     <p className="text-2xl sm:text-2xl">°C</p>
+                    <div className="h-full flex items-end">
+                        <div className="w-full flex items-center space-x-2">
+                            <Wind width={24} height={24} />
+                            <p>{getWindDirection(weatherData["data"]["current"]["wind_deg"])}</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex space-x-2 space-x-4 items-center">
+                <div className="relative w-full flex space-x-4 items-center">
                     <Image src={`/animated/${weatherData["data"]["current"]["weather"][0]["icon"]}.svg`} width={width > 640 ? 32 : 35} height={width > 640 ? 32 : 35} alt="open1" />
                     <p className="text-[#fff] text-xs sm:text-lg">{capitalizeWords(weatherData["data"]["current"]["weather"][0]["description"])}</p>
+                    {weatherData["data"]["alerts"] && (
+                        <HoverCard>
+                            <HoverCardTrigger asChild>
+                                <AlertTriangle color="#ff7800" className="absolute right-0 text-white cursor-pointer" />
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80 z-[5]">
+                                <div className="flex justify-between space-x-4">
+                                    <div className="space-y-1">
+                                        <h4 className="text-sm font-semibold">@{weatherData["data"]["alerts"][0]["sender_name"] || ""}</h4>
+                                        <p className="text-sm font-bold">
+                                            {weatherData["data"]["alerts"][0]["event"] || ""}
+                                        </p>
+                                        <p className="text-sm">
+                                            {weatherData["data"]["alerts"][0]["description"] || ""}
+                                        </p>
+                                        <div className="flex items-center pt-2">
+                                            <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+                                            <span className="text-xs text-muted-foreground">
+                                                {timestampToTimeMonth(weatherData["data"]["current"]["dt"] as number)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </HoverCardContent>
+                        </HoverCard>
+                    )}
                 </div>
             </div>
             <div className="w-full flex flex-col space-y-2 pt-4 border-t-[1px] border-t-zinc-700">

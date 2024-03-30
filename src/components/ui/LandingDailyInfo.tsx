@@ -152,7 +152,7 @@ function DailyInfoWithData({ capitalizeWords, setShownModal }: typeDailyInfoData
                         data={weatherData["data"]["hourly"].map((el: any) => Math.round(convertKelvinToCel(el["temp"])))}
                         smooth
                         radius={10}
-                        gradient={Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"])) < 15 ? ['#30a0fc','#5315bf'] : ['yellow', 'orange', 'red']}
+                        gradient={Math.round(convertKelvinToCel(weatherData["data"]["current"]["temp"])) < 15 ? ['#5315bf', '#30a0fc'] : ['yellow', 'orange', 'red']}
                         strokeLinecap={'round'}
                         strokeWidth={2}
                     />
