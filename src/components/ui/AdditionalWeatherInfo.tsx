@@ -60,22 +60,6 @@ function SkeletonLoader() {
     )
 }
 
-/**
- * convertTimestampToTime function converts a timestamp to a time string in AM/PM format.
- *
- * @param {number} timestamp - The timestamp to convert.
- * @returns {string} The formatted time string.
- */
-function convertTimestampToTime(timestamp: number): string {
-    const date = new Date(timestamp * 1000);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
-
-    return timeString;
-}
-
 function mapUVIndexToCategory(uvIndex: number): string {
     if (uvIndex >= 0 && uvIndex <= 2) {
         return "Low";
@@ -91,7 +75,7 @@ function mapUVIndexToCategory(uvIndex: number): string {
 }
 
 function AdditionalChildren() {
-    const { convertKelvinToCel, weatherData } = useContext(WeatherContext);
+    const { convertKelvinToCel, weatherData, convertTimestampToTime } = useContext(WeatherContext);
     return (
         <>
             <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">

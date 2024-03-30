@@ -90,6 +90,22 @@ export default function Page() {
   }
 
   /**
+ * convertTimestampToTime function converts a timestamp to a time string in AM/PM format.
+ *
+ * @param {number} timestamp - The timestamp to convert.
+ * @returns {string} The formatted time string.
+ */
+  function convertTimestampToTime(timestamp: number): string {
+    const date = new Date(timestamp * 1000);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+
+    return timeString;
+  }
+
+  /**
    * Handles the click event for the location button.
    * Fetches weather data based on the user's current location.
    */
@@ -123,8 +139,6 @@ export default function Page() {
     }
   }
 
-  console.log(weatherData);
-
   return (
     <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll">
       <WeatherContext.Provider
@@ -133,6 +147,7 @@ export default function Page() {
           weatherData,
           convertKelvinToCel,
           width,
+          convertTimestampToTime
         }}
       >
         <LandingWeather

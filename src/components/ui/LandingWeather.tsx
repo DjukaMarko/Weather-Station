@@ -109,28 +109,12 @@ function convertTimestampToDate(timestamp: number) {
     return date.toLocaleDateString("en-GB");
 }
 
-/**
- * convertTimestampToTime function converts a timestamp to a time string in AM/PM format.
- *
- * @param {number} timestamp - The timestamp to convert.
- * @returns {string} The formatted time string.
- */
-function convertTimestampToTime(timestamp: number): string {
-    const date = new Date(timestamp * 1000);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
-
-    return timeString;
-}
-
 function timestampToTimeMonth(timestamp: number): string {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date(timestamp * 1000);
     const monthName = months[date.getMonth()];
     const year = date.getFullYear();
-    console.log(date.getFullYear(), date.getMonth())
+  
     return `${monthName} ${year}`;
 }
 
@@ -205,7 +189,7 @@ function WeatherWithData({
     handleInputChange
 }: typeLandingWeatherWithData) {
 
-    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
+    const { width, weatherData, convertKelvinToCel, convertTimestampToTime } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
 
     const handleLocator = () => {
