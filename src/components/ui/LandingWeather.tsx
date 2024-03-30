@@ -10,7 +10,6 @@ import Modal from "./Modal";
 import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
 import { WeatherContext } from "../misc/WeatherContext";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 /**
  * LandingWeather component displays the weather information on the landing page.
@@ -218,7 +217,7 @@ function WeatherWithData({
                 </div>
                 <AnimatePresence>
                     {width > 640 && isSearchClicked && inputValue !== '' && (
-                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} transition={{ duration: 0.1 }} layout className="w-full overflow-x-scroll max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll">
+                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} transition={{ duration: 0.1 }} layout className="w-full overflow-x-scroll max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll z-[1]">
                             {searchAutoCompletion.map((item, index) => (
                                 <motion.div onClick={() => setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
                                     <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
@@ -246,7 +245,7 @@ function WeatherWithData({
                     {weatherData["data"]["alerts"] && (
                         <HoverCard>
                             <HoverCardTrigger asChild>
-                                <AlertTriangle color="#ff7800" className="absolute right-0 text-white cursor-pointer" />
+                                <AlertTriangle color="#ff7800" className="absolute right-0 text-white cursor-pointer z-[0]" />
                             </HoverCardTrigger>
                             <HoverCardContent className="w-80 z-[5]">
                                 <div className="flex justify-between space-x-4">
