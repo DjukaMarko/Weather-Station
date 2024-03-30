@@ -8,7 +8,7 @@ export default function AdditionalWeatherInfo() {
     const { isLoadingData, weatherData } = useContext(WeatherContext);
     return (
         <div className="relative w-full h-full min-h-[600px] sm:min-h-[400px] xl:min-h-fit xl:col-start-2 xl:row-start-1 xl:row-span-2">
-            <div className="relative w-full h-full bg-zinc-800 rounded-md flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2 justify-center items-center p-3">
+            <div className="relative w-full h-full bg-zinc-800 rounded-md flex flex-col space-y-1 sm:space-y-0 sm:flex-row sm:space-x-1 justify-center items-center p-1">
                {(isLoadingData || Object.keys(weatherData).length <= 0) ? <SkeletonLoader /> : <AdditionalChildren /> }
             </div>
         </div>
@@ -24,7 +24,7 @@ export default function AdditionalWeatherInfo() {
 function SkeletonLoader() {
     return (
         <>
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Skeleton baseColor="#515157" highlightColor="#67676e" width={24} height={24} />
@@ -35,7 +35,7 @@ function SkeletonLoader() {
                 <div className="absolute bottom-4 left-4 text-sm"><Skeleton baseColor="#515157" highlightColor="#67676e" width={100} height={24} /></div>
             </div>
 
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Skeleton baseColor="#515157" highlightColor="#67676e" width={24} height={24} />
@@ -46,7 +46,7 @@ function SkeletonLoader() {
                 <div className="absolute bottom-4 left-4 text-sm"><Skeleton baseColor="#515157" highlightColor="#67676e" width={100} height={24} /></div>
             </div>
 
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Skeleton baseColor="#515157" highlightColor="#67676e" width={24} height={24} />
@@ -94,7 +94,7 @@ function AdditionalChildren() {
     const { convertKelvinToCel, weatherData } = useContext(WeatherContext);
     return (
         <>
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Droplets color="white" />
@@ -106,7 +106,7 @@ function AdditionalChildren() {
             </div>
 
 
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Sunset color="white" />
@@ -118,7 +118,7 @@ function AdditionalChildren() {
             </div>
 
 
-            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#39393d] flex items-center rounded-lg text-white">
+            <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
                 <div className="absolute top-4 left-4 flex flex-col space-y-3 sm:space-y-6">
                     <div className="flex space-x-2 items-center">
                         <Sun color="white" />
