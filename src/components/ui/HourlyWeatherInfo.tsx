@@ -37,7 +37,7 @@ function SkeletonLoader() {
 
 
 function HourlyWeatherWithData() {
-    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
+    const { width, weatherData, convertKelvinToCel, formatDateForOffset } = useContext(WeatherContext);
     const ref =
         useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
     const { events: events } = useDraggable(ref, {
@@ -49,7 +49,7 @@ function HourlyWeatherWithData() {
             {weatherData["data"]["hourly"].map((hourly: any, index: number) => {
                 return (
                     <div key={index} onDragStart={(e) => e.preventDefault()} className="flex flex-col items-center space-y-2 text-white">
-                        <p className="text-sm sm:text-base">{index === 0 ? "Now" : new Date((hourly["dt"] as number + weatherData["data"]["timezone_offset"] as number) * 1000).getHours().toString().padStart(2, '0') + ":00"}</p>
+                        <p className="text-sm sm:text-base">{index === 0 ? "Now" : formatDateForOffset(hourly["dt"], weatherData["data"]["timezone_offset"]).HHMM}</p>
                         <div className="flex flex-col items-center space-y-1">
                             <Image className={`${hourly["rain"] === undefined ? "my-3" : "mb-1"}`} src={`/animated/${hourly["weather"][0]["icon"]}.svg`} width={width > 640 ? 36 : 25} height={width > 640 ? 36 : 25} alt="open1" />
                             {hourly["rain"] !== undefined && <p className="text-xs">{hourly["rain"]["1h"] as number}%</p> }

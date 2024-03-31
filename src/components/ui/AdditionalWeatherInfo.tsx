@@ -75,7 +75,7 @@ function mapUVIndexToCategory(uvIndex: number): string {
 }
 
 function AdditionalChildren() {
-    const { convertKelvinToCel, weatherData, convertTimestampToTime } = useContext(WeatherContext);
+    const { convertKelvinToCel, weatherData, formatDateForOffset } = useContext(WeatherContext);
     return (
         <>
             <div className="relative w-full sm:w-auto sm:h-full flex-1 bg-[#2f2f33] flex items-center rounded-lg text-white">
@@ -96,9 +96,9 @@ function AdditionalChildren() {
                         <Sunset color="white" />
                         <p>Sunset</p>
                     </div>
-                    <p className="text-3xl sm:text-5xl md:text-6xl">{convertTimestampToTime(weatherData["data"]["current"]["sunset"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
+                    <p className="text-3xl sm:text-5xl md:text-6xl">{formatDateForOffset(weatherData["data"]["current"]["sunset"], weatherData["data"]["timezone_offset"]).HHMM}</p>
                 </div>
-                <p className="absolute bottom-4 left-4 text-sm">Sunrise: {convertTimestampToTime(weatherData["data"]["current"]["sunrise"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
+                <p className="absolute bottom-4 left-4 text-sm">Sunrise: {formatDateForOffset(weatherData["data"]["current"]["sunrise"], weatherData["data"]["timezone_offset"]).HHMM}</p>
             </div>
 
 

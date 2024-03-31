@@ -90,7 +90,13 @@ interface WeatherContextType {
     isLoadingData: boolean;
     weatherData: any;
     convertKelvinToCel: (temp: number) => number;
-    convertTimestampToTime: (timestamp: number) => string;
+    formatDateForOffset: (timestamp: number, offset: number) => {
+        MMDDYYYY: string;
+        HHMM: string;
+        monthYear: string;
+        weekDay: string;
+        monthDay: string;
+    };
   }
 
 export { User, MobilePropTypes, MTypes, MOptionsTypes, searchCity, typeLandingDailyInfo, typeDailyInfoData, typeLandingWeatherWithData, typeLandingWeather, WeatherContextType };

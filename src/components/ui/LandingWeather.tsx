@@ -98,26 +98,6 @@ export default function LandingWeather({
 }
 
 /**
- * convertTimestampToDate function converts a timestamp to a date string.
- *
- * @param {number} timestamp - The timestamp to convert.
- * @returns {string} The formatted date string.
- */
-function convertTimestampToDate(timestamp: number) {
-    const date = new Date(timestamp * 1000);
-    return date.toLocaleDateString("en-GB");
-}
-
-function timestampToTimeMonth(timestamp: number): string {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const date = new Date(timestamp * 1000);
-    const monthName = months[date.getMonth()];
-    const year = date.getFullYear();
-  
-    return `${monthName} ${year}`;
-}
-
-/**
  * SkeletonLoader component displays a skeleton loader while the weather data is loading.
  *
  * @component
@@ -188,7 +168,7 @@ function WeatherWithData({
     handleInputChange
 }: typeLandingWeatherWithData) {
 
-    const { width, weatherData, convertKelvinToCel, convertTimestampToTime } = useContext(WeatherContext);
+    const { width, weatherData, convertKelvinToCel, formatDateForOffset} = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
 
     const handleLocator = () => {
@@ -235,7 +215,8 @@ function WeatherWithData({
                     <div className="h-full flex items-end">
                         <div className="w-full flex items-center space-x-2">
                             <Wind width={24} height={24} />
-                            <p>{getWindDirection(weatherData["data"]["current"]["wind_deg"])}</p>
+                            <p className="text-sm sm:text-base">{Math.round(weatherData["data"]["current"]["wind_speed"] as number * 3.6)} km/h</p>
+                            <p className="text-sm sm:text-base">{getWindDirection(weatherData["data"]["current"]["wind_deg"])}</p>
                         </div>
                     </div>
                 </div>
@@ -260,7 +241,7 @@ function WeatherWithData({
                                         <div className="flex items-center pt-2">
                                             <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
                                             <span className="text-xs text-muted-foreground">
-                                                {timestampToTimeMonth(weatherData["data"]["current"]["dt"] as number)}
+                                                {formatDateForOffset(weatherData["data"]["current"]["dt"], weatherData["data"]["timezone_offset"]).monthYear}
                                             </span>
                                         </div>
                                     </div>
@@ -283,10 +264,10 @@ function WeatherWithData({
                 <div className="w-full flex justify-between items-center">
                     <div className="flex space-x-2 items-center">
                         <CalendarDays color="#fff" size={20} />
-                        <p className="text-[#fff] text-xs sm:text-base">{convertTimestampToDate(weatherData["data"]["current"]["dt"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
-                        <p className="text-[#fff] text-xs sm:text-base font-bold">{convertTimestampToTime(weatherData["data"]["current"]["dt"] as number + weatherData["data"]["timezone_offset"] as number)}</p>
+                        <p className="text-[#fff] text-xs sm:text-base">{formatDateForOffset(weatherData["data"]["current"]["dt"], weatherData["data"]["timezone_offset"]).MMDDYYYY}</p>
+                        <p className="text-[#fff] text-xs sm:text-base font-bold">{formatDateForOffset(weatherData["data"]["current"]["dt"], weatherData["data"]["timezone_offset"]).HHMM}</p>
                     </div>
-                    <p className="hidden 2xl:block text-white text-sm underline cursor-pointer">Timestamps are based on the GMT+0 time zone.</p>
+                    <p className="hidden 2xl:block text-white text-sm underline cursor-pointer">Timestamps are based on your time zone.</p>
                 </div>
             </div>
         </>

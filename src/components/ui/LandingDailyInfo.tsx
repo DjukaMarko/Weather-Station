@@ -30,7 +30,7 @@ import { WeatherContext } from "../misc/WeatherContext";
  */
 
 export default function LandingDailyInfo({ capitalizeWords }: typeLandingDailyInfo) {
-    const { width, isLoadingData, weatherData, convertKelvinToCel } = useContext(WeatherContext);
+    const { width, isLoadingData, weatherData, convertKelvinToCel, formatDateForOffset } = useContext(WeatherContext);
     const [isShownModal, setShownModal] = useState(false);
     return (
         <div className="relative w-full h-full min-h-[400px] xl:min-h-fit xl:col-start-1 xl:row-span-2">
@@ -48,8 +48,8 @@ export default function LandingDailyInfo({ capitalizeWords }: typeLandingDailyIn
                                                 <p className="text-xs sm:text-base lg:text-lg">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["min"]))}°</p>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="md:px-10"><p className="text-sm sm:text-base lg:text-lg">{convertTimestampToDate(weatherData["data"]["daily"][index]["dt"])["monthDay"]}</p></TableCell>
-                                        <TableCell className="md:px-10"><p className="text-sm sm:text-base lg:text-lg">{convertTimestampToDate(weatherData["data"]["daily"][index]["dt"])["dayOfWeek"]}</p></TableCell>
+                                        <TableCell className="md:px-10"><p className="text-sm sm:text-base lg:text-lg">{formatDateForOffset(weatherData["data"]["daily"][index]["dt"], weatherData["data"]["timezone_offset"]).monthDay}</p></TableCell>
+                                        <TableCell className="md:px-10"><p className="text-sm sm:text-base lg:text-lg">{formatDateForOffset(weatherData["data"]["daily"][index]["dt"], weatherData["data"]["timezone_offset"]).weekDay}</p></TableCell>
                                     </TableRow>
                                 )
                             })}
@@ -99,26 +99,6 @@ function SkeletonLoader() {
     )
 }
 
-/**
- * Converts a timestamp to date.
- * 
- * @param timestamp - The timestamp to be converted.
- * @returns An object containing the month and day of the converted timestamp.
- */
-function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWeek: string } {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-    const date = new Date(timestamp * 1000);
-    const month = months[date.getMonth()];
-    const day = date.getDate();
-    const dayOfWeek = daysOfWeek[date.getDay()];
-
-    return {
-        monthDay: `${month} ${day}`,
-        dayOfWeek: dayOfWeek
-    };
-}
 
 /**
  * Renders the DailyInfoWithData component.
@@ -132,7 +112,7 @@ function convertTimestampToDate(timestamp: number): { monthDay: string, dayOfWee
  */
 
 function DailyInfoWithData({ capitalizeWords, setShownModal }: typeDailyInfoData) {
-    const { width, weatherData, convertKelvinToCel } = useContext(WeatherContext);
+    const { width, weatherData, convertKelvinToCel, formatDateForOffset } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
     return (
         <div>
@@ -170,8 +150,8 @@ function DailyInfoWithData({ capitalizeWords, setShownModal }: typeDailyInfoData
                                                 <p className="text-xs sm:text-base lg:text-lg">{Math.round(convertKelvinToCel(weatherData["data"]["daily"][index]["temp"]["min"]))}°</p>
                                             </div>
                                         </TableCell>
-                                        <TableCell><p className="text-sm sm:text-base lg:text-lg">{convertTimestampToDate(weatherData["data"]["daily"][index]["dt"])["monthDay"]}</p></TableCell>
-                                        <TableCell><p className="text-sm sm:text-base lg:text-lg">{convertTimestampToDate(weatherData["data"]["daily"][index]["dt"])["dayOfWeek"]}</p></TableCell>
+                                        <TableCell><p className="text-sm sm:text-base lg:text-lg">{formatDateForOffset(weatherData["data"]["daily"][index]["dt"], weatherData["data"]["timezone_offset"]).monthDay}</p></TableCell>
+                                        <TableCell><p className="text-sm sm:text-base lg:text-lg">{formatDateForOffset(weatherData["data"]["daily"][index]["dt"], weatherData["data"]["timezone_offset"]).weekDay}</p></TableCell>
                                     </TableRow>
                                 )
                             })}

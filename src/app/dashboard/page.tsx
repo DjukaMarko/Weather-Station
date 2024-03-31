@@ -12,8 +12,6 @@ import { searchCity } from "@/lib/definitions";
 import HourlyWeatherInfo from "@/components/ui/HourlyWeatherInfo";
 import DisplayLocation from "@/components/ui/DisplayLocation";
 import { WeatherContext } from "@/components/misc/WeatherContext";
-import { Droplets, Sun, Sunset } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 import AdditionalWeatherInfo from "@/components/ui/AdditionalWeatherInfo";
 
 type WeatherData = Record<string, any>;
@@ -90,20 +88,37 @@ export default function Page() {
   }
 
   /**
- * convertTimestampToTime function converts a timestamp to a time string in AM/PM format.
- *
- * @param {number} timestamp - The timestamp to convert.
- * @returns {string} The formatted time string.
- */
-  function convertTimestampToTime(timestamp: number): string {
-    const date = new Date(timestamp * 1000);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
+   * Formats the date based on the timezone offset.
+   * @param timestamp - The timestamp to be formatted.
+   * @param offset - The timezone offset.
+   * @returns The formatted date in multiple forms.
+   */
+  function formatDateForOffset(timestamp:number, offset: number) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    
+    const currentTimeUTC = new Date(timestamp*1000);
+    const currentTimeLocal = new Date(currentTimeUTC.getTime() + offset * 1000);
 
-    const timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+    const dayIndex = currentTimeLocal.getDay();
+    const dayOfWeek = daysOfWeek[dayIndex];
 
-    return timeString;
-  }
+    const month = currentTimeLocal.getMonth() + 1;
+    const monthName = months[month - 1];
+    
+    const day = currentTimeLocal.getDate();
+    const year = currentTimeLocal.getFullYear();
+    const hours = currentTimeLocal.getUTCHours().toString().padStart(2, '0');
+    const minutes = currentTimeLocal.getUTCMinutes().toString().padStart(2, '0');
+
+    return { 
+      MMDDYYYY:`${day}/${month}/${year}`, 
+      HHMM:`${hours}:${minutes}`, 
+      monthYear:`${monthName} ${year}`, 
+      weekDay: `${dayOfWeek}`, 
+      monthDay: `${day}/${month}`
+    };
+}
 
   /**
    * Handles the click event for the location button.
@@ -147,7 +162,7 @@ export default function Page() {
           weatherData,
           convertKelvinToCel,
           width,
-          convertTimestampToTime
+          formatDateForOffset
         }}
       >
         <LandingWeather
