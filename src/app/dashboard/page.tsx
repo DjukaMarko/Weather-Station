@@ -155,7 +155,7 @@ export default function Page() {
   }
 
   return (
-    <div className="relative z-[0] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll scrollbar-hide">
+    <div className="relative z-[-1] w-full h-full flex flex-col space-y-1 xl:space-y-0 xl:grid xl:grid-cols-2 xl:grid-rows-5 xl:gap-1 p-1 overflow-y-scroll">
       <WeatherContext.Provider
         value={{
           isLoadingData,
