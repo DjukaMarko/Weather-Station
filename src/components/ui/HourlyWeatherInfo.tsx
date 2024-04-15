@@ -21,7 +21,7 @@ export default function HourlyWeatherInfo() {
  */
 function SkeletonLoader() {
     return (
-        <div className="relative w-full h-full bg-zinc-800 rounded-md flex space-x-8 items-center p-6 overflow-x-hidden">
+        <div className="relative w-full h-full bg-zinc-800 rounded-md flex space-x-8 items-center p-6 overflow-x-hidden scrollbar-hide">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => {
                 return (
                     <div key={index} className="flex flex-col items-center space-y-2 text-white">

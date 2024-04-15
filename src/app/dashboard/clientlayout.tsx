@@ -27,11 +27,11 @@ export default function ClientLayout({
     }
 
     return (
-        <div className="fixed bg-zinc-900 w-full h-full flex flex-col sm:flex-row box-border overflow-y-scroll scrollbar-hide">
+        <div className="bg-zinc-900 w-full h-screen min-h-[800px] flex flex-col sm:flex-row box-border overflow-y-scroll scrollbar-hide">
             <div className="hidden sm:block">
                 <Sidebar isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
             </div>
-            <div className="block sm:hidden">
+            <div className="block sm:hidden z-[1]">
                 <MobileNavbar isSigningOut={isSigningOut} handleSignOut={handleSignOut} isClicked={isNavbarClicked} setClicked={setNavbarClicked} />
             </div>
             {children}
