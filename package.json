@@ -38,6 +38,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-safe-area": "^0.5.1",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },

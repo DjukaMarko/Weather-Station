@@ -27,7 +27,7 @@ export default function ClientLayout({
     }
 
     return (
-        <div className="bg-zinc-900 w-full h-screen min-h-[800px] flex flex-col sm:flex-row box-border overflow-y-scroll scrollbar-hide">
+        <div className="bg-zinc-900 w-full h-screen-safe min-h-[800px] flex flex-col sm:flex-row box-border overflow-y-scroll scrollbar-hide">
             <div className="hidden sm:block">
                 <Sidebar isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
             </div>
