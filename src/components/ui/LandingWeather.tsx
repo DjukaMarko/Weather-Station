@@ -10,6 +10,7 @@ import Modal from "./Modal";
 import { typeLandingWeather, typeLandingWeatherWithData } from "@/lib/definitions";
 import { WeatherContext } from "../misc/WeatherContext";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
+import openweather from "@/../public/openweather.png"
 
 /**
  * LandingWeather component displays the weather information on the landing page.
@@ -168,7 +169,7 @@ function WeatherWithData({
     handleInputChange
 }: typeLandingWeatherWithData) {
 
-    const { width, weatherData, convertKelvinToCel, formatDateForOffset} = useContext(WeatherContext);
+    const { width, weatherData, convertKelvinToCel, formatDateForOffset } = useContext(WeatherContext);
     if (weatherData["data"] === undefined) return null;
 
     const handleLocator = () => {
@@ -197,7 +198,7 @@ function WeatherWithData({
                 </div>
                 <AnimatePresence>
                     {width > 640 && isSearchClicked && inputValue !== '' && (
-                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} transition={{ duration: 0.1 }} layout className="w-full overflow-x-scroll max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-y-scroll z-[1]">
+                        <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} transition={{ duration: 0.1 }} layout className="w-full max-h-[150px] bg-zinc-700 rounded-lg text-white flex flex-col overflow-scroll scrollbar-hide z-[1]">
                             {searchAutoCompletion.map((item, index) => (
                                 <motion.div onClick={() => setSelectedCity({ name: item.name as string, cou_name_en: item.cou_name_en as string, lat: item.lat as number, lon: item.lon as number })} layout key={index} className="w-full px-4 py-2 hover:bg-zinc-600 cursor-pointer">
                                     <p className="text-sm">{item["name"]}, {item["cou_name_en"]}, {Number(item["lat"]).toFixed(2)}, {Number(item["lon"]).toFixed(2)} </p>
@@ -257,9 +258,12 @@ function WeatherWithData({
                         <MapPin size={20} color="#fff" />
                         <p className="text-[#fff] text-xs sm:text-base">{weatherData["_normalized_city"]}, {weatherData["ISO_3166-1_alpha-2"]}</p>
                     </div>
-                    <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }}>
-                        <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={20} />
-                    </motion.div>
+                    <div className="flex space-x-4 items-center">
+                        <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }}>
+                            <Navigation onClick={handleLocator} fill={isLocatorSet ? "#fff" : "#27272a"} color="#fff" size={20} />
+                        </motion.div>
+                        <a href="https://openweathermap.org/" target="_blank"><Image alt="openweather" src={openweather} className="w-12" /></a>
+                    </div>
                 </div>
                 <div className="w-full flex justify-between items-center">
                     <div className="flex space-x-2 items-center">

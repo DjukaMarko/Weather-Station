@@ -9,9 +9,10 @@ import { UserConflictError } from './errors/UserConflictError';
 import { PasswordMismatchError } from './errors/PasswordMismatchError';
 import { FormEmptyError } from './errors/FormEmptyError';
 import { getUser } from './utils';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function authenticate(
-  prevState: string | undefined,
+  prevState: { message: string, id: string } | undefined,
   formData: FormData,
 ) {
   try {
@@ -21,9 +22,9 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return { message: "Invalid credentals.", id: uuidv4() };
         default:
-          return 'Something went wrong.';
+          return { message: "Something went wrong ...", id: uuidv4() };
       }
     }
     throw error;
@@ -56,7 +57,7 @@ export async function githubauthenticate() {
 
 
 export async function register(
-  prevState: string | undefined,
+  prevState: { message: string, id: string } | undefined,
   formData: FormData,
 ) {
   try {
@@ -79,7 +80,7 @@ export async function register(
     const errorClasses = [PasswordMismatchError, UserConflictError, FormEmptyError];
 
     const isErrorInstanceOfAny = errorClasses.some(errorClass => error instanceof errorClass);
-    if(isErrorInstanceOfAny) return (error as Error).message as string;
+    if(isErrorInstanceOfAny) return { message: (error as Error).message as string, id: uuidv4() };
     throw error;
   }
   redirect("/login");

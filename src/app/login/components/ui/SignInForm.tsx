@@ -56,7 +56,7 @@ export default function SignInForm() {
                     <Alert className="mt-4" variant="destructive">
                         <AlertTitle>Error</AlertTitle>
                         <AlertDescription>
-                            {errorMessage}
+                            {errorMessage.message}
                         </AlertDescription>
                     </Alert>
                 }

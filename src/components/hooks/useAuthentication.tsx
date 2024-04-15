@@ -4,11 +4,14 @@ import { useFormState } from "react-dom";
 
 interface HookReturnValue {
     handleSubmit: (event: SyntheticEvent<HTMLFormElement>) => void;
-    errorMessage: string | undefined;
+    errorMessage: {
+      message: string,
+      id: string
+    } | undefined;
     isLoading: boolean;
   }
 
-const useAuthentication = (callback: (prevState: string | undefined, formData: FormData) => Promise<string | undefined>): HookReturnValue => {
+const useAuthentication = (callback: (prevState: { message: string, id: string } | undefined, formData: FormData) => Promise<{ message: string, id: string } | undefined> ): HookReturnValue => {
     const [errorMessage, dispatch] = useFormState(callback, undefined);
     const [isLoading, setLoading] = useState(false);
   
