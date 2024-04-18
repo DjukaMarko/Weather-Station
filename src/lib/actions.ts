@@ -6,10 +6,9 @@ import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation';
 import { UserConflictError } from './errors/UserConflictError';
-import { PasswordMismatchError } from './errors/PasswordMismatchError';
-import { FormEmptyError } from './errors/FormEmptyError';
 import { getUser } from './utils';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 
 export async function authenticate(
   prevState: { message: string, id: string } | undefined,
@@ -55,6 +54,9 @@ export async function githubauthenticate() {
   }
 }
 
+function isError(obj: any): obj is Error {
+  return obj instanceof Error;
+}
 
 export async function register(
   prevState: { message: string, id: string } | undefined,
@@ -66,8 +68,24 @@ export async function register(
     const confirm_password = formData.get("confirm-password") as string;
     const user = await getUser(email);
 
-    if (email.length === 0 || password.length === 0 || confirm_password.length === 0) throw new FormEmptyError();
-    if (password !== confirm_password) throw new PasswordMismatchError();
+    const formDataSchema = z.object({
+      email: z.string().email(),
+      password: z
+        .string()
+        .min(6)
+        .refine((password) => {
+          return password === confirm_password;
+        }, { message: "Passwords do not match" }),
+      confirm_password: z.string().min(6),
+    });
+
+
+    formDataSchema.parse({
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      confirm_password: formData.get("confirm-password") as string,
+    });
+
     if (user) throw new UserConflictError();
 
     bcrypt.genSalt(10, function (err, salt) {
@@ -77,11 +95,21 @@ export async function register(
     });
 
   } catch (error) {
-    const errorClasses = [PasswordMismatchError, UserConflictError, FormEmptyError];
+    if (isError(error)) {
+      let errorMessage: string;
+      try {
+        const parsedError = JSON.parse(error.message);
+        if (Array.isArray(parsedError) && parsedError.length > 0) {
+          errorMessage = parsedError[0].message;
+        } else {
+          errorMessage = error.message;
+        }
+      } catch (parseError) {
+        errorMessage = error.message;
+      }
 
-    const isErrorInstanceOfAny = errorClasses.some(errorClass => error instanceof errorClass);
-    if(isErrorInstanceOfAny) return { message: (error as Error).message as string, id: uuidv4() };
-    throw error;
+      return { message: errorMessage, id: uuidv4() };
+    }
   }
   redirect("/login");
 }
