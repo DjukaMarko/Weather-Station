@@ -22,8 +22,8 @@ export default function ClientLayout({
     const [isSigningOut, setSigningOut] = useState(false);
 
     const handleSignOut = () => {
-        setSigningOut(true);
         misauthenticate();
+        setSigningOut(true);
     }
 
     return (

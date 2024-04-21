@@ -58,7 +58,7 @@ export default function WeatherForm() {
                     />
                 </div>
 
-                <Button variant={"default"} className="w-full mt-6" disabled={isLoading}>
+                <Button id="submit" variant={"default"} className="w-full mt-6" disabled={isLoading}>
                     {isLoading &&
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     }

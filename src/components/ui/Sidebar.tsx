@@ -14,7 +14,7 @@ export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes
     };
     return (
         <motion.div
-            initial={{ width: "17rem" }}
+            initial={{ width: "6rem" }}
             animate={{ width: isHovered ? "15rem" : "6rem" }}
             transition={{ duration: 0.3 }}
             className={`sticky h-full flex flex-col bg-zinc-800 z-[1]`}>
@@ -39,7 +39,7 @@ export default function Sidebar({ isSigningOut, handleSignOut }: MobilePropTypes
                     {isHovered && <p className="text-[#fff] text-md font-[600] ml-4">Settings</p>}
                 </div>
             </div>
-            <motion.div onClick={handleSignOut} layout className={`absolute hover:bg-zinc-700 bottom-0 ${isHovered && "space-x-3"} cursor-pointer left-0 right-0 m-auto flex justify-center items-center border-t-zinc-700 border-t-[1px] p-3`}>
+            <motion.div data-cy="sign-out" onClick={handleSignOut} layout className={`absolute hover:bg-zinc-700 bottom-0 ${isHovered && "space-x-3"} cursor-pointer left-0 right-0 m-auto flex justify-center items-center border-t-zinc-700 border-t-[1px] p-3`}>
                 {isSigningOut ? (
                     <Icons.spinner color="white" className="h-4 w-4 animate-spin" />
                 ) : (
