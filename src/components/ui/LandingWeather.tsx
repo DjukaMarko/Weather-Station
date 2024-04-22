@@ -184,7 +184,7 @@ function WeatherWithData({
 
     return (
         <>
-            <motion.div className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 px-6 py-3 sm:p-6 w-[300px] sm:w-[350px]">
+            <motion.div data-testid="landing-weather" className="absolute right-0 top-6 group rounded-full flex flex-col space-y-2 px-6 py-3 sm:p-6 w-[300px] sm:w-[350px]">
                 <div className="flex flex-row-reverse items-center cursor-pointer">
                     <motion.div whileTap={{ scale: 1.05 }} whileHover={{ scale: 1.2 }} className="p-2" onClick={handleSearchClick}>
                         {isSearchClicked ? <X color="#fff" size={22} /> : <Search color="#fff" size={22} />}

@@ -12,7 +12,7 @@ type User = {
  */
 type MobilePropTypes = {
     isSigningOut: boolean;
-    handleSignOut: () => void;
+    handleSignOut: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 /**

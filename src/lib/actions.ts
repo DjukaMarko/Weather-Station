@@ -32,7 +32,7 @@ export async function authenticate(
 
 export async function misauthenticate() {
   try {
-    await signOut({ redirectTo: "/login" });
+    await signOut();
   } catch (error) {
     throw error;
   }

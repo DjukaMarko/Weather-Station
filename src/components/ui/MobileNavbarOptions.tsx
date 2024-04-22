@@ -32,17 +32,18 @@ export default function MobileNavbarOptions({ isClicked, handleClick, isSigningO
                             <Settings size={32} color="#fff" />
                             <p className="text-[#fff] text-lg font-[600] ml-4">Settings</p>
                         </motion.div>
-
-                        <motion.div onClick={handleSignOut} layout className="flex items-center space-x-4 cursor-pointer hover:bg-zinc-700 px-4 py-2 rounded-xl">
-                            {isSigningOut ? (
-                                <Icons.spinner color="white" className="h-6 w-6 animate-spin m-auto" />
-                            ) : (
-                                <>
-                                    <LogOut size={32} color="#fff" />
-                                    <p className="text-[#fff] font-[600] text-lg">Sign Out</p>
-                                </>
-                            )}
-                        </motion.div>
+                        <form onSubmit={(e) => handleSignOut(e)}>
+                            <motion.button layout className="w-full flex items-center space-x-4 cursor-pointer hover:bg-zinc-700 px-4 py-2 rounded-xl">
+                                {isSigningOut ? (
+                                    <Icons.spinner color="white" className="h-6 w-6 animate-spin m-auto" />
+                                ) : (
+                                    <>
+                                        <LogOut size={32} color="#fff" />
+                                        <p className="text-[#fff] font-[600] text-lg">Sign Out</p>
+                                    </>
+                                )}
+                            </motion.button>
+                        </form>
                     </div>
                 </motion.div>
             }

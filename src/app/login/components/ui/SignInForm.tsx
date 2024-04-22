@@ -13,7 +13,7 @@ export default function SignInForm() {
 
     return (
         <div className="w-full">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} >
                 <div className="flex flex-col space-y-1">
                     <Label className="sr-only" htmlFor="email">
                         Email

@@ -1,5 +1,5 @@
 describe('Form Interaction Test', () => {
-  it("Tries to register to the page, login and logout", () => {
+  it("Tries to register to the page, login and access dashboard", () => {
     // Base email address
     const baseEmail = "testuser";
 
@@ -25,8 +25,10 @@ describe('Form Interaction Test', () => {
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="password"]').type('123456');
     cy.get('button[id="submit"]').click();
-    cy.wait(5000);
-    cy.get('[data-cy="sign-out"]').click();
+    cy.url().should('include', '/dashboard');
+    cy.get('[data-testid="landing-weather"]').should("be.visible");
+    cy.visit("/api/auth/signout")
+    cy.get('button[id="submitButton"]').click();
     cy.url().should('include', '/login');
   });
 
@@ -40,6 +42,7 @@ describe('Form Interaction Test', () => {
 
     // Click on the submit button
     cy.get('button[id="submit"]').click();
+    cy.contains('Error').should('exist');
   });
 
   it('Types into form fields and submits the form', () => {

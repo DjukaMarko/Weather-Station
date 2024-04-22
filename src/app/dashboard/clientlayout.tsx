@@ -2,7 +2,7 @@
 import Sidebar from "@/components/ui/Sidebar";
 import useWindowDimensions from "@/components/hooks/useWindowDimensions";
 import MobileNavbar from "@/components/ui/MobileNavbar";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { misauthenticate } from "@/lib/actions";
 
 
@@ -21,9 +21,10 @@ export default function ClientLayout({
 
     const [isSigningOut, setSigningOut] = useState(false);
 
-    const handleSignOut = () => {
-        misauthenticate();
+    const handleSignOut = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setSigningOut(true);
+        misauthenticate();
     }
 
     return (
