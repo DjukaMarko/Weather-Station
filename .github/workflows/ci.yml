@@ -13,4 +13,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: e2e:headless
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://127.0.0.1:3000'
