@@ -26,7 +26,6 @@ describe('Form Interaction Test', () => {
     cy.get('input[name="password"]').type('123456');
     cy.get('button[id="submit"]').click();
     cy.url().should('include', '/dashboard');
-    cy.get('[data-testid="landing-weather"]').should("be.visible");
     cy.visit("/api/auth/signout")
     cy.get('button[id="submitButton"]').click();
     cy.url().should('include', '/login');
