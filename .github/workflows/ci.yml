@@ -5,9 +5,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: npm install
+
       - uses: cypress-io/github-action@v6
         with:
-          browser: chrome
-          headed: true
           start: e2e:headless
           wait-on: 'http://127.0.0.1:3000'
