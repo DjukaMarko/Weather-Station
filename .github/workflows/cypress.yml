@@ -32,3 +32,13 @@ jobs:
           # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          OPENCAGE_API_KEY: ${{ secrets.OPENCAGE_API_KEY }}
+          OPENWEATHER_SECRET: ${{ secrets.OPENWEATHER_SECRET }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+          POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+          POSTGRES_URL_NO_SSL: ${{ secrets.POSTGRES_URL_NO_SSL }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
