@@ -2,6 +2,7 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
+    projectId: "13fj67",
     baseUrl : "http://127.0.0.1:3000/",
     chromeWebSecurity: false,
     setupNodeEvents(on, config) {
