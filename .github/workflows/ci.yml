@@ -1,20 +1,11 @@
-name: Cypress Tests
-
+name: Chrome headed
 on: [push]
-
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: cypress-io/github-action@v4
         with:
-          node-version: '20'
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          start: e2e:headless
-          wait-on: 'http://127.0.0.1:3000'
+          browser: chrome
+          headed: true
