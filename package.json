@@ -8,8 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "start-ci": "start-server-and-test dev http://127.0.0.1:3000",
     "e2e:headless": "start-server-and-test dev http://127.0.0.1:3000 \"cypress run --browser chrome --e2e\""
   },
   "dependencies": {
