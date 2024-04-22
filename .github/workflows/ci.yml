@@ -1,11 +1,13 @@
 name: Chrome headed
-on: [push]
+on: push
 jobs:
   cypress-run:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: cypress-io/github-action@v4
+      - uses: actions/checkout@v4
+      - uses: cypress-io/github-action@v6
         with:
           browser: chrome
           headed: true
+          start: e2e:headless
+          wait-on: 'http://127.0.0.1:3000'
