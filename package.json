@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "cypress:open": "cypress open",
-    "e2e:headless": "start-server-and-test dev http://127.0.0.1:3000 \"cypress run --browser chrome --e2e\""
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --browser chrome --e2e\""
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.0.4",
