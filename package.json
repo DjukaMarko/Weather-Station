@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "cypress:open": "cypress open",
-    "start:server": "start-server-and-test dev http://localhost:3000",
+    "start:server": "start-server-and-test dev http://localhost:3000 \"cypress run --browser chrome --e2e\"",
     "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --browser chrome --e2e --record --key b7aca959-3735-4057-bd1e-82a0a0d7a6ce\""
   },
   "dependencies": {
